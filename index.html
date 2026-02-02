@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CRARAR - Sistema de Gestão Veterinária</title>
+    <link rel="icon" type="image/png" href="/public/CRARAR_logo.png" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              crarar: {
+                primary: "#3B7A57",
+                secondary: "#F5F5DC",
+                text: "#2F2F2F",
+                light: "#F8F9F8",
+                accent: "#E8E8E8",
+                success: "#22c55e",
+                danger: "#ef4444",
+              },
+            },
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+            },
+            animation: {
+              "fade-in": "fadeIn 0.3s ease-out",
+              "slide-up": "slideUp 0.4s ease-out",
+            },
+            keyframes: {
+              fadeIn: {
+                "0%": { opacity: "0" },
+                "100%": { opacity: "1" },
+              },
+              slideUp: {
+                "0%": { transform: "translateY(10px)", opacity: "0" },
+                "100%": { transform: "translateY(0)", opacity: "1" },
+              },
+            },
+          },
+        },
+      };
+    </script>
+    <script>
+      if (
+        localStorage.getItem("theme") === "dark" ||
+        (!("theme" in localStorage) &&
+          window.matchMedia("(prefers-color-scheme: dark)").matches)
+      ) {
+        document.documentElement.classList.add("dark");
+      } else {
+        document.documentElement.classList.remove("dark");
+      }
+    </script>
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        background-color: #f1f5f9;
+        color: #2f2f2f;
+        overflow-x: hidden;
+        transition:
+          background-color 0.3s ease,
+          color 0.3s ease;
+      }
+
+      /* --- TEMA DARK: OTIMIZAÇÃO DE CONTRASTE --- */
+      .dark body {
+        background-color: #020617; /* Slate-950: Fundo ultra escuro */
+        color: #f8fafc;
+      }
+
+      /* Cards e Superfícies Elevadas */
+      .dark .bg-white {
+        background-color: #0f172a !important; /* Slate-900 */
+      }
+
+      /* Fundos Inset (Inputs, Tabelas, Background Geral) */
+      .dark .bg-slate-50,
+      .dark .bg-slate-50\/50,
+      .dark .bg-slate-100,
+      .dark .bg-gray-50,
+      .dark .bg-crarar-light {
+        background-color: #020617 !important; /* Slate-950 */
+      }
+
+      /* Texto Principal (Títulos, Headings) */
+      .dark .text-slate-900,
+      .dark .text-slate-800,
+      .dark .text-crarar-text,
+      .dark h1,
+      .dark h2,
+      .dark h3,
+      .dark h4 {
+        color: #ffffff !important; /* Branco Puro para máximo contraste */
+      }
+
+      /* Texto Secundário (Labels, Subtítulos) */
+      .dark .text-slate-700,
+      .dark .text-slate-600 {
+        color: #e2e8f0 !important; /* Slate-200 */
+      }
+
+      /* Texto Terciário (Muted, Infos menores) */
+      .dark .text-slate-400,
+      .dark .text-slate-500 {
+        color: #94a3b8 !important; /* Slate-400: Visível mas discreto */
+      }
+
+      /* Bordas e Linhas de Separação */
+      .dark .border-slate-100,
+      .dark .border-slate-200,
+      .dark .border-gray-100,
+      .dark .border-gray-200,
+      .dark .divide-slate-50,
+      .dark .divide-slate-100 {
+        border-color: #1e293b !important; /* Slate-800 */
+      }
+
+      /* Inputs e Selects */
+      .dark input,
+      .dark select,
+      .dark textarea {
+        background-color: #020617 !important;
+        color: #ffffff !important;
+        border-color: #334155 !important; /* Slate-700 */
+      }
+
+      /* Ajuste de Botões Fantasmas/Ghost */
+      .dark .hover\/bg-slate-50:hover,
+      .dark .hover\/bg-gray-100:hover {
+        background-color: #1e293b !important;
+      }
+
+      .dark .shadow-sm,
+      .dark .shadow-md,
+      .dark .shadow-lg {
+        box-shadow:
+          0 10px 15px -3px rgba(0, 0, 0, 0.6),
+          0 4px 6px -2px rgba(0, 0, 0, 0.4);
+      }
+
+      .glass {
+        background: rgba(255, 255, 255, 0.8);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+      }
+
+      .dark .glass {
+        background: rgba(15, 23, 42, 0.8);
+      }
+
+      .scrollbar-green::-webkit-scrollbar {
+        width: 6px;
+      }
+      .scrollbar-green::-webkit-scrollbar-track {
+        background: #f8fafc;
+        border-radius: 10px;
+      }
+      .dark .scrollbar-green::-webkit-scrollbar-track {
+        background: #0f172a;
+      }
+      .scrollbar-green::-webkit-scrollbar-thumb {
+        background: #3b7a57;
+        border-radius: 10px;
+      }
+      .scrollbar-green::-webkit-scrollbar-thumb:hover {
+        background: #2d5d42;
+      }
+
+      .no-scrollbar::-webkit-scrollbar {
+        display: none;
+      }
+      .no-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+    </style>
+    <script type="importmap">
+      {
+        "imports": {
+          "react": "https://esm.sh/react@^19.2.4",
+          "react-dom/": "https://esm.sh/react-dom@^19.2.4/",
+          "react/": "https://esm.sh/react@^19.2.4/",
+          "react-router-dom": "https://esm.sh/react-router-dom@^7.13.0",
+          "lucide-react": "https://esm.sh/lucide-react@^0.563.0",
+          "@supabase/supabase-js": "https://esm.sh/@supabase/supabase-js@^2.93.2"
+        }
+      }
+    </script>
+    <link rel="stylesheet" href="/index.css" />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/index.tsx"></script>
+  </body>
+</html>
