@@ -794,7 +794,7 @@ const AdminDashboard: React.FC = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   <div className="space-y-1">
                     <label className="text-[10px] font-bold text-slate-400 uppercase ml-1">Nome Comercial *</label>
-                    <input required value={newProduct.nome} onChange={e => setNewProduct({...newProduct, name: e.target.value})} className="w-full rounded-2xl border border-slate-200 bg-slate-50 dark:bg-slate-950 p-4 text-sm font-bold outline-none focus:border-crarar-primary text-slate-900 dark:text-white" />
+                    <input required value={newProduct.nome} onChange={e => setNewProduct({...newProduct, nome: e.target.value})} className="w-full rounded-2xl border border-slate-200 bg-slate-50 dark:bg-slate-950 p-4 text-sm font-bold outline-none focus:border-crarar-primary text-slate-900 dark:text-white" />
                   </div>
                   <div className="space-y-1">
                     <label className="text-[10px] font-bold text-slate-400 uppercase ml-1">SKU / Código Único</label>
