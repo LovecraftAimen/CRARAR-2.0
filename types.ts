@@ -1,11 +1,10 @@
-
 export interface Tutor {
   id: string;
   nome: string;
-  cpf: string;
+  cpf?: string | null;
   telefone: string;
-  email?: string;
-  endereco?: string;
+  email?: string | null;
+  endereco?: string | null;
   created_at?: string;
 }
 
@@ -19,8 +18,8 @@ export interface Animal {
   sexo: string;
   cor: string;
   peso: number;
-  categoria: 'crarar' | 'normal';
-  status?: 'vivo' | 'obito';
+  categoria: "crarar" | "normal";
+  status?: "vivo" | "obito";
   data_adesao: string;
   created_at?: string;
 }
@@ -44,7 +43,7 @@ export interface Usuario {
   id: string;
   email: string;
   nome: string;
-  role: 'admin' | 'atendente';
+  role: "admin" | "atendente";
   ativo: boolean;
 }
 
@@ -73,6 +72,6 @@ export interface Produto {
   proxima_calibracao?: string;
   uso_veterinario?: string;
   via_administracao?: string;
-  status_operacional?: 'Ativo' | 'Manutenção' | 'Inativo';
+  status_operacional?: "Ativo" | "Manutenção" | "Inativo";
   created_at?: string;
 }
