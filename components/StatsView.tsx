@@ -242,7 +242,9 @@ const StatsView: React.FC<StatsViewProps> = ({ atendimentos, animais, produtos, 
           >
             <FileText className="h-4 w-4" /> Gerar Relatório A4
           </button>
-          <div className="flex bg-slate-100 dark:bg-slate-800 p-1.5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-inner">
+
+          
+          {/* <div className="flex bg-slate-100 dark:bg-slate-800 p-1.5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-inner">
             {(['Mes', 'Trimestre', 'Semestre', 'Ano'] as Period[]).map((p) => (
               <button
                 key={p}
@@ -254,7 +256,27 @@ const StatsView: React.FC<StatsViewProps> = ({ atendimentos, animais, produtos, 
                 {p}
               </button>
             ))}
-          </div>
+          </div> */}
+
+          
+          <div className="relative flex items-center bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-1.5 shadow-sm hover:border-crarar-primary transition-all group">
+  <Filter className="h-3.5 w-3.5 text-slate-400 mr-2 group-hover:text-crarar-primary transition-colors" />
+  <select
+    value={period}
+    onChange={(e) => setPeriod(e.target.value as Period)}
+    className="bg-transparent text-[11px] font-black uppercase tracking-widest text-slate-600 dark:text-slate-300 outline-none cursor-pointer appearance-none pr-6"
+  >
+    <option value="Mes">Mensal</option>
+    <option value="Trimestre">Trimestral</option>
+    <option value="Semestre">Semestral</option>
+    <option value="Ano">Anual</option>
+  </select>
+  {/* Ícone de seta posicionado à direita */}
+  <div className="pointer-events-none absolute right-2 flex items-center text-slate-400">
+    <ChevronRight className="h-3.5 w-3.5 rotate-90" />
+  </div>
+</div>
+
         </div>
       </div>
 
