@@ -1361,8 +1361,8 @@ const StatsView: React.FC<StatsViewProps> = ({ atendimentos, animais, produtos, 
                       <div className="flex items-center justify-between border-b-4 border-crarar-primary pb-8 relative z-10">
                          <div>
                             <div className="flex items-center gap-3 mb-2">
-                               <PawPrint className="h-8 w-8 text-crarar-primary" />
-                               <h1 className="text-4xl font-black tracking-tight text-slate-900">RELATÓRIO EXECUTIVO</h1>
+                               <img src="/CRARAR_logo.png" alt="CRARAR Logo" className="h-8 w-8 text-crarar-primary" />
+                               <h1 className="text-3xl font-black tracking-tight text-slate-900">RELATÓRIO EXECUTIVO</h1>
                             </div>
                             <p className="text-sm font-bold text-crarar-primary uppercase tracking-[0.2em]">Centro de Referência Animal - CRARAR</p>
                          </div>
