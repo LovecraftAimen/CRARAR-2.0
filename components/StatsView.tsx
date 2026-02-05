@@ -412,7 +412,7 @@ const StatsView: React.FC<StatsViewProps> = ({ atendimentos, animais, produtos, 
                         <PawPrint className="w-[400px] h-[400px] rotate-12" />
                       </div>
 
-                      {/* <div className="flex items-center justify-between border-b-4 border-crarar-primary pb-8 relative z-10">
+                      <div className="flex items-center justify-between border-b-4 border-crarar-primary pb-8 relative z-10">
                          <div>
                             <div className="flex items-center gap-3 mb-2">
                                <img src="/CRARAR_logo.png" alt="CRARAR Logo" className="h-8 w-8 text-crarar-primary" />
@@ -425,25 +425,26 @@ const StatsView: React.FC<StatsViewProps> = ({ atendimentos, animais, produtos, 
                             <p className="text-sm font-black">{new Date(reportDates.start).toLocaleDateString('pt-BR')} — {new Date(reportDates.end).toLocaleDateString('pt-BR')}</p>
                             <p className="text-[9px] text-slate-400 mt-1">EMISSÃO: {new Date().toLocaleDateString('pt-BR')}</p>
                          </div>
+                      </div>
+                        
+                     {/* <div className="text-center mb-8">
+                          <img src="/CRARAR_logo.png" alt="CRARAR Logo" className="mx-auto w-32 h-auto" />
+                      </div>
+                      
+                      <div className="flex items-center justify-between border-b-4 border-crarar-primary pb-8 relative z-10">
+                          <div>
+                              <div className="flex items-center gap-3 mb-2">
+                                 {/* A imagem original foi removida daqui */}
+                                 <h1 className="text-4xl font-black tracking-tight text-slate-900">RELATÓRIO EXECUTIVO</h1>
+                              </div>
+                              <p className="text-sm font-bold text-crarar-primary uppercase tracking-[0.2em]">Centro de Referência Animal - CRARAR</p>
+                          </div>
+                          <div className="text-right">
+                              <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">PERÍODO DE COMPETÊNCIA</p>
+                              <p className="text-sm font-black">{new Date(reportDates.start).toLocaleDateString('pt-BR')} — {new Date(reportDates.end).toLocaleDateString('pt-BR')}</p>
+                              <p className="text-[9px] text-slate-400 mt-1">EMISSÃO: {new Date().toLocaleDateString('pt-BR')}</p>
+                          </div>
                       </div> */}
-                     <div className="text-center mb-8">
-    <img src="/CRARAR_logo.png" alt="CRARAR Logo" className="mx-auto w-32 h-auto" />
-</div>
-
-<div className="flex items-center justify-between border-b-4 border-crarar-primary pb-8 relative z-10">
-    <div>
-        <div className="flex items-center gap-3 mb-2">
-           {/* A imagem original foi removida daqui */}
-           <h1 className="text-4xl font-black tracking-tight text-slate-900">RELATÓRIO EXECUTIVO</h1>
-        </div>
-        <p className="text-sm font-bold text-crarar-primary uppercase tracking-[0.2em]">Centro de Referência Animal - CRARAR</p>
-    </div>
-    <div className="text-right">
-        <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">PERÍODO DE COMPETÊNCIA</p>
-        <p className="text-sm font-black">{new Date(reportDates.start).toLocaleDateString('pt-BR')} — {new Date(reportDates.end).toLocaleDateString('pt-BR')}</p>
-        <p className="text-[9px] text-slate-400 mt-1">EMISSÃO: {new Date().toLocaleDateString('pt-BR')}</p>
-    </div>
-</div>
 
                       <div className="grid grid-cols-2 gap-8 relative z-10">
                          <div className="space-y-6">
