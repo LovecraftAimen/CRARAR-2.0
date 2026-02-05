@@ -412,7 +412,7 @@ const StatsView: React.FC<StatsViewProps> = ({ atendimentos, animais, produtos, 
                         <PawPrint className="w-[400px] h-[400px] rotate-12" />
                       </div>
 
-                      <div className="flex items-center justify-between border-b-4 border-crarar-primary pb-8 relative z-10">
+                      {/* <div className="flex items-center justify-between border-b-4 border-crarar-primary pb-8 relative z-10">
                          <div>
                             <div className="flex items-center gap-3 mb-2">
                                <img src="/CRARAR_logo.png" alt="CRARAR Logo" className="h-8 w-8 text-crarar-primary" />
@@ -425,13 +425,13 @@ const StatsView: React.FC<StatsViewProps> = ({ atendimentos, animais, produtos, 
                             <p className="text-sm font-black">{new Date(reportDates.start).toLocaleDateString('pt-BR')} — {new Date(reportDates.end).toLocaleDateString('pt-BR')}</p>
                             <p className="text-[9px] text-slate-400 mt-1">EMISSÃO: {new Date().toLocaleDateString('pt-BR')}</p>
                          </div>
-                      </div>
+                      </div> */}
 
 
 
 
                      
-                     {/* <div className="text-center mb-8">
+                     <div className="text-center mb-8">
                           <img src="/CRARAR_logo.png" alt="CRARAR Logo" className="mx-auto w-32 h-auto" />
                       </div>
                       
@@ -447,7 +447,7 @@ const StatsView: React.FC<StatsViewProps> = ({ atendimentos, animais, produtos, 
                               <p className="text-sm font-black">{new Date(reportDates.start).toLocaleDateString('pt-BR')} — {new Date(reportDates.end).toLocaleDateString('pt-BR')}</p>
                               <p className="text-[9px] text-slate-400 mt-1">EMISSÃO: {new Date().toLocaleDateString('pt-BR')}</p>
                           </div>
-                      </div> */}
+                      </div>
 
 
 
