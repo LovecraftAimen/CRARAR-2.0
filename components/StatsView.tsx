@@ -412,7 +412,7 @@ const StatsView: React.FC<StatsViewProps> = ({ atendimentos, animais, produtos, 
     <div>
         <div className="flex items-center gap-3 mb-2">
            {/* A imagem original foi removida daqui */}
-           <h1 className="text-3xl font-black tracking-tight text-slate-900">RELATÓRIO EXECUTIVO</h1>
+           <h1 className="text-4xl font-black tracking-tight text-slate-900">RELATÓRIO EXECUTIVO</h1>
         </div>
         <p className="text-sm font-bold text-crarar-primary uppercase tracking-[0.2em]">Centro de Referência Animal - CRARAR</p>
     </div>
