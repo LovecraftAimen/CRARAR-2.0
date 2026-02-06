@@ -262,15 +262,15 @@ const GerarPDF: React.FC<GerarPDFProps> = ({ animal, tutor, atendimentos }) => {
       yPosition += alturaProporcional + 10; 
     } catch (e) {
       console.warn("Logo não encontrada ou erro ao calcular dimensões.");
-      yPosition += 10;
+      yPosition += 5;
     }
 
 
-    // // Cabeçalho
-    // doc.setFontSize(18);
-    // doc.setTextColor(59, 122, 87); // Cor do tema (#3B7A57)
-    // doc.setFont('helvetica', 'bold');
-    // doc.text('CRARAR - Centro de Referência Animal', pageWidth / 2, yPosition, { align: 'center' });
+    // Cabeçalho
+    doc.setFontSize(14);
+    doc.setTextColor(59, 122, 87); // Cor do tema (#3B7A57)
+    doc.setFont('helvetica', 'bold');
+    doc.text('CENTRO DE RESGATE, ACOLHIMENTO E REINTEGRAÇÃO DE ANIMAIS DE RUA', pageWidth / 2, yPosition, { align: 'center' });
     
     yPosition += 8;
     doc.setFontSize(12);
