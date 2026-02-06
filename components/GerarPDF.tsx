@@ -231,6 +231,38 @@ const GerarPDF: React.FC<GerarPDFProps> = ({ animal, tutor, atendimentos }) => {
     const margin = 20;
     let yPosition = 15;
 
+      // --- CONFIGURAÇÃO DA MARCA D'ÁGUA ---
+            try {
+              const imgProps = doc.getImageProperties('CRARAR_logo.png');
+              const larguraMarcaAgua = 120; // Tamanho maior para o fundo
+              const alturaMarcaAgua = (imgProps.height * larguraMarcaAgua) / imgProps.width;
+              
+              // 1. Salva o estado atual (para não afetar o texto depois)
+              doc.saveGraphicsState(); 
+              
+              // 2. Define a transparência (0.1 é bem discreto, 1.0 é opaco)
+              doc.setGState(new doc.GState({ opacity: 0.1 })); 
+              
+              // 3. Desenha a imagem no centro da página
+              doc.addImage(
+                'CRARAR_logo.png',
+                'PNG',
+                (pageWidth - larguraMarcaAgua) / 2, // Centraliza X
+                (doc.internal.pageSize.height - alturaMarcaAgua) / 2, // Centraliza Y
+                larguraMarcaAgua,
+                alturaMarcaAgua,
+                undefined,
+                'FAST' // Melhora performance de renderização
+              );
+              
+              // 4. Restaura a opacidade total para o restante do texto
+              doc.restoreGraphicsState(); 
+            } catch (e) {
+              console.warn("Erro ao inserir marca d'água");
+            }
+// ------------------------------------
+
+
     // Logo Centralizada no Topo
     // try {
     //   // Tenta adicionar a logo. Caso o arquivo não exista no ambiente, o PDF continua sem a imagem para evitar erro fatal.
