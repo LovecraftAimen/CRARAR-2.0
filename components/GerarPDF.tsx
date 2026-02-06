@@ -232,20 +232,45 @@ const GerarPDF: React.FC<GerarPDFProps> = ({ animal, tutor, atendimentos }) => {
     let yPosition = 15;
 
     // Logo Centralizada no Topo
-    try {
-      // Tenta adicionar a logo. Caso o arquivo não exista no ambiente, o PDF continua sem a imagem para evitar erro fatal.
-      doc.addImage('CRARAR_logo.png', 'PNG', (pageWidth - 30) / 2, yPosition, 30, 30);
-      yPosition += 35;
+    // try {
+    //   // Tenta adicionar a logo. Caso o arquivo não exista no ambiente, o PDF continua sem a imagem para evitar erro fatal.
+    //   doc.addImage('CRARAR_logo.png', 'PNG', (pageWidth - 30) / 2, yPosition, 30, 30);
+    //   yPosition += 35;
+    // } catch (e) {
+    //   console.warn("Logo não encontrada no caminho /public/CRARAR_logo.png");
+    //   yPosition += 10;
+    // }
+
+      try {
+      const imgProps = doc.getImageProperties('CRARAR_logo.png');
+      const larguraDesejada = 30; // largura que você quer no PDF
+      
+      // Cálculo da altura proporcional: (Altura Original / Largura Original) * Largura Desejada
+      const alturaProporcional = (imgProps.height * larguraDesejada) / imgProps.width;
+      
+      // Centraliza horizontalmente com a altura calculada
+      doc.addImage(
+        'CRARAR_logo.png', 
+        'PNG', 
+        (pageWidth - larguraDesejada) / 2, 
+        yPosition, 
+        larguraDesejada, 
+        alturaProporcional
+      );
+      
+      // Pula a altura da imagem + um respiro (5mm)
+      yPosition += alturaProporcional + 10; 
     } catch (e) {
-      console.warn("Logo não encontrada no caminho /public/CRARAR_logo.png");
+      console.warn("Logo não encontrada ou erro ao calcular dimensões.");
       yPosition += 10;
     }
 
-    // Cabeçalho
-    doc.setFontSize(18);
-    doc.setTextColor(59, 122, 87); // Cor do tema (#3B7A57)
-    doc.setFont('helvetica', 'bold');
-    doc.text('CRARAR - Centro de Referência Animal', pageWidth / 2, yPosition, { align: 'center' });
+
+    // // Cabeçalho
+    // doc.setFontSize(18);
+    // doc.setTextColor(59, 122, 87); // Cor do tema (#3B7A57)
+    // doc.setFont('helvetica', 'bold');
+    // doc.text('CRARAR - Centro de Referência Animal', pageWidth / 2, yPosition, { align: 'center' });
     
     yPosition += 8;
     doc.setFontSize(12);
