@@ -482,7 +482,7 @@ const GerarPDF: React.FC<GerarPDFProps> = ({ animal, tutor, atendimentos }) => {
     doc.setTextColor(150, 150, 150);
     doc.setFont('helvetica', 'normal');
     doc.text(`Documento emitido em: ${now.toLocaleDateString('pt-BR')} às ${now.toLocaleTimeString('pt-BR')}`, margin, doc.internal.pageSize.height - 10);
-    doc.text(`CRARAR - Centro de Referência Animal`, pageWidth - margin, doc.internal.pageSize.height - 10, { align: 'right' });
+    doc.text(`CRARAR - Centro De Resgate, Acolhimento E Reintegração De Animais De Rua`, pageWidth - margin, doc.internal.pageSize.height - 10, { align: 'right' });
 
     // Salvar o PDF
     doc.save(`Prontuario_${animal.nome}_${now.toISOString().split('T')[0]}.pdf`);
