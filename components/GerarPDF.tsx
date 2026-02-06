@@ -241,14 +241,14 @@ const GerarPDF: React.FC<GerarPDFProps> = ({ animal, tutor, atendimentos }) => {
               doc.saveGraphicsState(); 
               
               // 2. Define a transparência (0.1 é bem discreto, 1.0 é opaco)
-              doc.setGState(new doc.GState({ opacity: 0.1 })); 
+              doc.setGState(new doc.GState({ opacity: 0.08 })); 
               
               // 3. Desenha a imagem no centro da página
               doc.addImage(
                 'CRARAR_logo.png',
                 'PNG',
                 (pageWidth - larguraMarcaAgua) / 2, // Centraliza X
-                (doc.internal.pageSize.height - alturaMarcaAgua) / 2, // Centraliza Y
+                ((doc.internal.pageSize.height - alturaMarcaAgua) / 2)-80), // Centraliza Y
                 larguraMarcaAgua,
                 alturaMarcaAgua,
                 undefined,
