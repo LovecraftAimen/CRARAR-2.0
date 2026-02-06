@@ -248,7 +248,7 @@ const GerarPDF: React.FC<GerarPDFProps> = ({ animal, tutor, atendimentos }) => {
                 'CRARAR_logo.png',
                 'PNG',
                 (pageWidth - larguraMarcaAgua) / 2, // Centraliza X
-                ((doc.internal.pageSize.height - alturaMarcaAgua) / 2)-80), // Centraliza Y
+                ((doc.internal.pageSize.height - alturaMarcaAgua) / 2)-80, // Centraliza Y
                 larguraMarcaAgua,
                 alturaMarcaAgua,
                 undefined,
