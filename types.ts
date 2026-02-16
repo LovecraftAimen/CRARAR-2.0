@@ -36,6 +36,7 @@ export interface Atendimento {
   observacoes?: string;
   proximo_retorno?: string;
   obito?: boolean;
+  castracao?: boolean;
   created_at?: string;
 }
 
