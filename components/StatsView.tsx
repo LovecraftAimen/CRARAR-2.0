@@ -783,9 +783,11 @@ const StatsView: React.FC<StatsViewProps> = ({ atendimentos, animais, produtos, 
             onClick={() => setShowReportModal(true)}
             className="flex items-center gap-2 rounded-2xl bg-crarar-primary text-white px-5 py-2.5 text-xs font-bold hover:bg-crarar-primary/90 transition-all shadow-lg shadow-crarar-primary/20"
           >
-            <FileText className="h-4 w-4" /> Gerar Relatório A4
+            <FileText className="h-4 w-4" /> Relatório PDF
           </button>
-          <div className="flex bg-slate-100 dark:bg-slate-800 p-1.5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-inner">
+
+                
+          {/* <div className="flex bg-slate-100 dark:bg-slate-800 p-1.5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-inner">
             {(['Mes', 'Trimestre', 'Semestre', 'Ano'] as Period[]).map((p) => (
               <button
                 key={p}
@@ -797,7 +799,40 @@ const StatsView: React.FC<StatsViewProps> = ({ atendimentos, animais, produtos, 
                 {p}
               </button>
             ))}
-          </div>
+          </div> */}
+
+                {/* NOVA SELEÇÃO DE MêS */}
+                <div className="flex bg-slate-100 dark:bg-slate-800 p-1.5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-inner">
+                  {/* Dropdown para Mobile */}
+                  <select
+                    value={period}
+                    onChange={(e) => setPeriod(e.target.value)}
+                    className="block md:hidden w-full bg-transparent text-[10px] font-black uppercase tracking-widest text-slate-900 dark:text-white focus:outline-none px-2"
+                  >
+                    {['Mes', 'Trimestre', 'Semestre', 'Ano'].map((p) => (
+                      <option key={p} value={p}>{p}</option>
+                    ))}
+                  </select>
+                
+                  {/* Botões para Desktop (md:flex esconde abaixo de 768px) */}
+                  <div className="hidden md:flex">
+                    {(['Mes', 'Trimestre', 'Semestre', 'Ano'] as Period[]).map((p) => (
+                      <button
+                        key={p}
+                        onClick={() => setPeriod(p)}
+                        className={`px-4 py-1.5 text-[10px] font-black uppercase tracking-widest rounded-xl transition-all ${
+                          period === p 
+                            ? 'bg-white dark:bg-slate-700 text-slate-900 dark:text-white shadow-sm' 
+                            : 'text-slate-400 hover:text-slate-500'
+                        }`}
+                      >
+                        {p}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+ {/* FIM DA NOVA SELEÇÃO DE MêS */}
+                
         </div>
       </div>
 
