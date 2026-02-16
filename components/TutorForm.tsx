@@ -181,6 +181,26 @@ const TutorForm: React.FC<TutorFormProps> = ({ onSave }) => {
     }
   };
 
+// MÁSCARA PARA TELEFONE / CELULAR
+  const formatPhone = (value: string) => {
+  // Remove tudo que não é dígito
+  const digits = value.replace(/\D/g, "");
+  
+  // Limita a 11 números
+  const limited = digits.slice(0, 11);
+
+  // Aplica a máscara (XX) XXXX-XXXX ou (XX) XXXXX-XXXX
+  if (limited.length <= 10) {
+    return limited
+      .replace(/(\d{2})(\d)/, "($1) $2")
+      .replace(/(\d{4})(\d)/, "$1-$2");
+  } else {
+    return limited
+      .replace(/(\d{2})(\d)/, "($1) $2")
+      .replace(/(\d{5})(\d)/, "$1-$2");
+  }
+};
+  
   return (
     <div className="mx-auto w-full max-w-2xl rounded-3xl bg-white p-5 md:p-8 shadow-sm border border-gray-100">
       <div className="mb-6 flex items-center gap-3">
@@ -231,7 +251,7 @@ const TutorForm: React.FC<TutorFormProps> = ({ onSave }) => {
             </div>
           </div>
 
-          <div>
+          {/* <div>
             <label className="block text-xs font-bold text-gray-500 uppercase mb-1">
               Telefone *
             </label>
@@ -248,7 +268,28 @@ const TutorForm: React.FC<TutorFormProps> = ({ onSave }) => {
                 placeholder="(00) 00000-0000"
               />
             </div>
+          </div> */}
+
+          {/* TELEFONE MODIFICADO PARA MASCARA */}
+          <div>
+            <label className="block text-xs font-bold text-gray-500 uppercase mb-1">
+              Telefone *
+            </label>
+            <div className="relative">
+              <Phone className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
+              <input
+                required
+                type="tel"
+                value={formData.telefone}
+                onChange={(e) =>
+                  setFormData({ ...formData, telefone: formatPhone(e.target.value) })
+                }
+                className="w-full rounded-xl border border-gray-200 bg-gray-50 py-3 pl-10 pr-4 text-sm focus:ring-2 focus:ring-crarar-primary outline-none transition-all"
+                placeholder="(00) 00000-0000"
+              />
+            </div>
           </div>
+
 
           <div className="sm:col-span-2">
             <label className="block text-xs font-bold text-gray-500 uppercase mb-1">
