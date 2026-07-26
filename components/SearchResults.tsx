@@ -699,6 +699,15 @@ const AnimalDetailsModal = ({
                 <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Castrado</p>
                 <p className={`text-xs font-bold ${isCastrated ? 'text-emerald-600' : 'text-slate-700'}`}>{isCastrated ? 'Sim' : 'Não'}</p>
              </div>
+                <div className="bg-slate-50/50 p-3 rounded-2xl border border-slate-100">
+    <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest">
+        Microchip
+    </p>
+
+    <p className="text-xs font-bold text-crarar-primary break-all">
+        {animal.microchip || "Não informado"}
+    </p>
+</div>
           </div>
         </div>
 
