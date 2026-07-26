@@ -678,7 +678,7 @@ const AnimalDetailsModal = ({
             </button>
           </div>
           
-          <div className="mt-6 grid grid-cols-2 sm:grid-cols-5 gap-3">
+          <div className="mt-6 grid grid-cols-2 sm:grid-cols-6 gap-3">
              <div className="bg-slate-50/50 p-3 rounded-2xl border border-slate-100 flex flex-col justify-center">
                 <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Espécie</p>
                 <p className="text-xs font-bold text-slate-700">{animal.especie}</p>
