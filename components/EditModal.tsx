@@ -28,6 +28,7 @@ const EditModal: React.FC<EditModalProps> = ({ animal, tutor, atendimentos, onCl
     raca: animal.raca,
     sexo: animal.sexo,
     peso: animal.peso,
+    microchip: animal.microchip || '',
     data_nascimento: animal.data_nascimento
   });
 
@@ -52,7 +53,8 @@ const EditModal: React.FC<EditModalProps> = ({ animal, tutor, atendimentos, onCl
           raca: animalForm.raca,
           sexo: animalForm.sexo,
           peso: Number(animalForm.peso),
-          data_nascimento: animalForm.data_nascimento
+          data_nascimento: animalForm.data_nascimento,
+          microchip: animalForm.microchip
         })
         .eq('id', animal.id);
 
@@ -200,6 +202,23 @@ const EditModal: React.FC<EditModalProps> = ({ animal, tutor, atendimentos, onCl
                       <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Nascimento</label>
                       <input type="date" required value={animalForm.data_nascimento} onChange={e => setAnimalForm({...animalForm, data_nascimento: e.target.value})} className="w-full rounded-xl border border-slate-200 bg-slate-50 p-3 text-sm font-bold text-slate-700 outline-none focus:border-crarar-primary" />
                     </div>
+                    <div className="col-span-2">
+  <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">
+    Microchip
+  </label>
+  <input
+    type="text"
+    value={animalForm.microchip}
+    onChange={(e) =>
+      setAnimalForm({
+        ...animalForm,
+        microchip: e.target.value,
+      })
+    }
+    placeholder="Código do microchip"
+    className="w-full rounded-xl border border-slate-200 bg-slate-50 p-3 text-sm font-bold text-slate-700 outline-none focus:border-crarar-primary"
+  />
+</div>
                   </div>
                   <button disabled={isLoading} type="submit" className="w-full py-4 mt-4 bg-crarar-primary text-white rounded-2xl font-bold flex items-center justify-center gap-2 shadow-lg shadow-crarar-primary/20 hover:scale-[1.02] transition-all disabled:opacity-50">
                     {isLoading ? <div className="h-5 w-5 animate-spin rounded-full border-2 border-white border-t-transparent"></div> : <><Save className="h-5 w-5" /> Salvar Alterações</>}
