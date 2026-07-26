@@ -972,7 +972,7 @@ const StatsView: React.FC<StatsViewProps> = ({ atendimentos, animais, produtos, 
                                   <img
                                     src="/CRARAR_logo.png"
                                     alt=""
-                                    className="w-[400px] rotate-12 select-none"
+                                    className="w-[500px] select-none"
                                   />
                                 </div>
 
