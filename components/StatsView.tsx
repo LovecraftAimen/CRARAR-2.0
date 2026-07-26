@@ -965,9 +965,16 @@ const StatsView: React.FC<StatsViewProps> = ({ atendimentos, animais, produtos, 
                      ref={reportRef} 
                      className="w-[210mm] min-h-[297mm] bg-white p-[20mm] space-y-10 text-slate-900 font-sans relative"
                    >
-                      <div className="absolute inset-0 opacity-[0.02] pointer-events-none flex items-center justify-center overflow-hidden">
+                      {/* <div className="absolute inset-0 opacity-[0.02] pointer-events-none flex items-center justify-center overflow-hidden">
                         <PawPrint className="w-[400px] h-[400px] rotate-12" />
-                      </div>
+                      </div> */}
+                           <div className="absolute inset-0 opacity-[0.02] pointer-events-none flex items-center justify-center overflow-hidden">
+                                  <img
+                                    src="/CRARAR_logo.png"
+                                    alt=""
+                                    className="w-[400px] rotate-12 select-none"
+                                  />
+                                </div>
 
                       <div className="flex items-center justify-between border-b-4 border-crarar-primary pb-8 relative z-10">
                          <div>
