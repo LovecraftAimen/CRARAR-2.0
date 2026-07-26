@@ -847,7 +847,7 @@ const AnimalDetailsModal = ({
                   </p>
                 </div>
                     <div className="bg-slate-50/50 p-3 rounded-2xl border border-slate-100">
-    <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest">
+    <p className="text-[11px] font-black text-slate-400 uppercase tracking-widest">
         Microchip
     </p>
 
