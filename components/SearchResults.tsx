@@ -552,7 +552,6 @@ const AnimalListItem = ({
   const tutor = tutores.find(t => t.id === animal.tutor_id);
   // Identifica se é CRARAR pelo tutor, já que não temos coluna categoria no banco de animais
   const isCrarar = tutor?.nome?.toUpperCase() === 'CRARAR';
-      console.log(animal);
 
   return (
     <div className="group flex flex-col sm:flex-row items-center gap-4 overflow-hidden rounded-3xl bg-white p-5 shadow-sm border border-slate-100 transition-all hover:shadow-md hover:translate-y-[-2px]">
