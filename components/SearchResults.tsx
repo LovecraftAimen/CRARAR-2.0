@@ -677,16 +677,6 @@ const TutorCard = ({
               </p>
             </div>
           </div>
-
-          {onEdit && (
-            <button
-              onClick={() => onEdit(tutor)}
-              className="shrink-0 p-2.5 rounded-2xl bg-slate-50 text-slate-400 hover:text-crarar-primary hover:bg-crarar-primary/10 transition-all border border-slate-100 shadow-sm"
-              title="Editar Tutor"
-            >
-              <Edit className="h-4 w-4" />
-            </button>
-          )}
         </div>
 
         <div className="space-y-3 border-t border-slate-50 pt-5">
