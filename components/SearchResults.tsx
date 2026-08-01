@@ -511,10 +511,15 @@ import React, { useState, useMemo, useEffect } from 'react';
 import { 
   Search, PawPrint, User, Stethoscope, ChevronRight, Filter, 
   ShieldCheck, Heart, ChevronLeft, Clock, X, Download, Edit, 
-  UserPlus, Trash2, Calendar, Weight, Info, MapPin, Phone, CreditCard,
+  UserPlus, Trash2, Calendar, Weight, Info, MapPin, Phone, Edit, CreditCard,
   Mail, ChevronRight as ChevronRightIcon, Scissors
 } from 'lucide-react';
 import { Tutor, Animal, Atendimento } from '../types';
+
+// Add 01/08
+import EditModal from './EditModal.tsx';
+import EditTutorModal from './EditTutorModal.tsx';
+
 
 interface SearchResultsProps {
   tutores: Tutor[];
@@ -596,42 +601,141 @@ const AnimalListItem = ({
   );
 };
 
-const TutorCard = ({ tutor }: { tutor: Tutor; key?: React.Key }) => {
-  return (
-    <div className="rounded-3xl border border-slate-100 bg-white p-6 shadow-sm transition-all hover:shadow-md hover:translate-y-[-2px]">
-      <div className="mb-6 flex items-center gap-4">
-        <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-crarar-primary/10 text-crarar-primary shadow-inner">
-          <User className="h-7 w-7" />
-        </div>
-        <div className="overflow-hidden">
-          <h4 className="font-bold text-slate-800 text-lg line-clamp-1">{tutor.nome}</h4>
-          <p className="text-sm text-slate-400 font-medium">{tutor.telefone}</p>
-        </div>
-      </div>
+// const TutorCard = ({ tutor }: { tutor: Tutor; key?: React.Key }) => {
+// const TutorCard = ({
+//   tutor,
+//   onEdit
+// }: {
+//   tutor: Tutor;
+//   onEdit?: (tutor: Tutor) => void;
+//   key?: React.Key;
+// }) => {
+//   return (
+//     <div className="rounded-3xl border border-slate-100 bg-white p-6 shadow-sm transition-all hover:shadow-md hover:translate-y-[-2px]">
+//       {/* <div className="mb-6 flex items-center gap-4"> */}
+//           <div className="mb-6 flex items-center justify-between gap-4">
+//         <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-crarar-primary/10 text-crarar-primary shadow-inner">
+//           <User className="h-7 w-7" />
+//         </div>
+//         <div className="overflow-hidden">
+//           <h4 className="font-bold text-slate-800 text-lg line-clamp-1">{tutor.nome}</h4>
+//           <p className="text-sm text-slate-400 font-medium">{tutor.telefone}</p>
+//         </div>
+//       </div>
       
-      <div className="space-y-3 border-t border-slate-50 pt-5">
-        <div className="flex items-center gap-3 text-xs text-slate-500">
-          <div className="p-1.5 bg-slate-50 rounded-lg">
-            <CreditCard className="h-3.5 w-3.5 opacity-60" />
+//       <div className="space-y-3 border-t border-slate-50 pt-5">
+//         <div className="flex items-center gap-3 text-xs text-slate-500">
+//           <div className="p-1.5 bg-slate-50 rounded-lg">
+//             <CreditCard className="h-3.5 w-3.5 opacity-60" />
+//           </div>
+//           <span className="font-medium">CPF: {tutor.cpf || 'Não informado'}</span>
+//         </div>
+//         <div className="flex items-center gap-3 text-xs text-slate-500">
+//            <div className="p-1.5 bg-slate-50 rounded-lg">
+//              <Mail className="h-3.5 w-3.5 opacity-60" />
+//            </div>
+//           <span className="line-clamp-1 font-medium">{tutor.email || 'Sem email cadastrado'}</span>
+//         </div>
+//         <div className="flex items-center gap-3 text-xs text-slate-500">
+//            <div className="p-1.5 bg-slate-50 rounded-lg">
+//              <MapPin className="h-3.5 w-3.5 opacity-60" />
+//            </div>
+//           <span className="line-clamp-1 font-medium">{tutor.endereco || 'Endereço não informado'}</span>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
+
+
+
+
+
+const TutorCard = ({
+  tutor,
+  onEdit
+}: {
+  tutor: Tutor;
+  onEdit?: (tutor: Tutor) => void;
+  key?: React.Key;
+}) => {
+  return (
+    <div className="rounded-3xl border border-slate-100 bg-white p-6 shadow-sm transition-all hover:shadow-md hover:translate-y-[-2px] flex flex-col justify-between">
+      <div>
+        <div className="mb-6 flex items-center justify-between gap-4">
+          <div className="flex items-center gap-4 overflow-hidden">
+            <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-crarar-primary/10 text-crarar-primary shadow-inner">
+              <User className="h-7 w-7" />
+            </div>
+
+            <div className="overflow-hidden">
+              <h4 className="font-bold text-slate-800 text-lg line-clamp-1">
+                {tutor.nome}
+              </h4>
+              <p className="text-sm text-slate-400 font-medium">
+                {tutor.telefone}
+              </p>
+            </div>
           </div>
-          <span className="font-medium">CPF: {tutor.cpf || 'Não informado'}</span>
+
+          {onEdit && (
+            <button
+              onClick={() => onEdit(tutor)}
+              className="shrink-0 p-2.5 rounded-2xl bg-slate-50 text-slate-400 hover:text-crarar-primary hover:bg-crarar-primary/10 transition-all border border-slate-100 shadow-sm"
+              title="Editar Tutor"
+            >
+              <Edit className="h-4 w-4" />
+            </button>
+          )}
         </div>
-        <div className="flex items-center gap-3 text-xs text-slate-500">
-           <div className="p-1.5 bg-slate-50 rounded-lg">
-             <Mail className="h-3.5 w-3.5 opacity-60" />
-           </div>
-          <span className="line-clamp-1 font-medium">{tutor.email || 'Sem email cadastrado'}</span>
-        </div>
-        <div className="flex items-center gap-3 text-xs text-slate-500">
-           <div className="p-1.5 bg-slate-50 rounded-lg">
-             <MapPin className="h-3.5 w-3.5 opacity-60" />
-           </div>
-          <span className="line-clamp-1 font-medium">{tutor.endereco || 'Endereço não informado'}</span>
+
+        <div className="space-y-3 border-t border-slate-50 pt-5">
+          <div className="flex items-center gap-3 text-xs text-slate-500">
+            <div className="p-1.5 bg-slate-50 rounded-lg shrink-0">
+              <CreditCard className="h-3.5 w-3.5 opacity-60" />
+            </div>
+            <span className="font-medium">
+              CPF: {tutor.cpf || "Não informado"}
+            </span>
+          </div>
+
+          <div className="flex items-center gap-3 text-xs text-slate-500">
+            <div className="p-1.5 bg-slate-50 rounded-lg shrink-0">
+              <Mail className="h-3.5 w-3.5 opacity-60" />
+            </div>
+            <span className="line-clamp-1 font-medium">
+              {tutor.email || "Sem email cadastrado"}
+            </span>
+          </div>
+
+          <div className="flex items-center gap-3 text-xs text-slate-500">
+            <div className="p-1.5 bg-slate-50 rounded-lg shrink-0">
+              <MapPin className="h-3.5 w-3.5 opacity-60" />
+            </div>
+            <span className="line-clamp-1 font-medium">
+              {tutor.endereco || "Endereço não informado"}
+            </span>
+          </div>
         </div>
       </div>
+
+      {onEdit && (
+        <button
+          onClick={() => onEdit(tutor)}
+          className="w-full mt-6 flex items-center justify-center gap-2 rounded-2xl bg-slate-50 border border-slate-200 py-2.5 px-4 text-xs font-bold text-slate-700 hover:bg-crarar-primary hover:text-white hover:border-crarar-primary shadow-sm transition-all"
+        >
+          <Edit className="h-4 w-4" />
+          Editar Dados do Tutor
+        </button>
+      )}
     </div>
   );
 };
+
+
+
+
+
 
 const AnimalDetailsModal = ({ 
   animal, 
@@ -828,6 +932,9 @@ const SearchResults: React.FC<SearchResultsProps> = ({
   const [petSubFilter, setPetSubFilter] = useState<'all' | 'crarar' | 'normal'>('all');
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedAnimalForDetails, setSelectedAnimalForDetails] = useState<Animal | null>(null);
+      // add
+      const [selectedTutorForEdit, setSelectedTutorForEdit] =
+    useState<Tutor | null>(null);
 
   useEffect(() => {
     setCurrentPage(1);
@@ -1004,7 +1111,7 @@ const SearchResults: React.FC<SearchResultsProps> = ({
             </div>
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {processedData.tutores.map(tutor => (
-                <TutorCard key={tutor.id} tutor={tutor} />
+                <TutorCard key={tutor.id} tutor={tutor} onEdit={setSelectedTutorForEdit} />
               ))}
               {processedData.tutores.length === 0 && (
                 <div className="col-span-full py-12 text-center bg-white rounded-[32px] border border-dashed border-slate-200">
@@ -1024,6 +1131,12 @@ const SearchResults: React.FC<SearchResultsProps> = ({
           onClose={() => setSelectedAnimalForDetails(null)} 
         />
       )}
+          {selectedTutorForEdit && (
+              <EditTutorModal
+                tutor={selectedTutorForEdit}
+                onClose={() => setSelectedTutorForEdit(null)}
+              />
+            )}
     </div>
   );
 };
