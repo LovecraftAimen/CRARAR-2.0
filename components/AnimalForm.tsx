@@ -23,6 +23,7 @@ const AnimalForm: React.FC<AnimalFormProps> = ({ tutores, onSave }) => {
     nome: "",
     especie: "Cão",
     raca: "",
+    cor: "",
     data_nascimento: "",
     sexo: "Macho",
     peso: 0,
@@ -91,7 +92,7 @@ const AnimalForm: React.FC<AnimalFormProps> = ({ tutores, onSave }) => {
         nome: formData.nome.trim(),
         especie: formData.especie,
         raca: formData.raca.trim(),
-        cor: "", // Valor padrão para evitar erro de NOT NULL no banco de dados
+        cor: formData.cor.trim(), // Valor padrão para evitar erro de NOT NULL no banco de dados
         data_nascimento: formData.data_nascimento,
         sexo: formData.sexo,
         peso: isNaN(formData.peso) ? 0 : formData.peso,
@@ -105,6 +106,7 @@ const AnimalForm: React.FC<AnimalFormProps> = ({ tutores, onSave }) => {
         nome: "",
         especie: "Cão",
         raca: "",
+        cor: "",
         data_nascimento: "",
         sexo: "Macho",
         peso: 0,
@@ -327,6 +329,22 @@ const AnimalForm: React.FC<AnimalFormProps> = ({ tutores, onSave }) => {
               }
               className="w-full rounded-xl border border-gray-200 bg-gray-50 py-3 px-4 text-sm focus:ring-2 focus:ring-crarar-primary outline-none transition-all"
               placeholder="Ex: Labrador"
+            />
+          </div>
+
+          <div>
+            <label className="block text-xs font-bold text-gray-500 uppercase mb-1">
+              Cor
+            </label>
+          
+            <input
+              type="text"
+              value={formData.cor}
+              onChange={(e) =>
+                setFormData({ ...formData, cor: e.target.value })
+              }
+              className="w-full rounded-xl border border-gray-200 bg-gray-50 py-3 px-4 text-sm focus:ring-2 focus:ring-crarar-primary outline-none transition-all"
+              placeholder="Ex: Preto e branco"
             />
           </div>
 
