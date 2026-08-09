@@ -1,5 +1,3 @@
-
-
 // import React, { useState, useMemo, useRef, useEffect } from 'react';
 // import { 
 //   BarChart3, 
@@ -19,7 +17,8 @@
 //   Edit,
 //   AlertTriangle,
 //   Eye,
-//   ChevronRight
+//   ChevronRight,
+//   Scissors
 // } from 'lucide-react';
 // import { Atendimento, Animal, Produto, Tutor } from '../types.ts';
 // import html2canvas from 'html2canvas';
@@ -133,7 +132,9 @@
 //     const totalCrarar = scopeAnimais.filter(a => crararTutorIds.includes(a.tutor_id)).length;
 //     const totalNormal = scopeAnimais.length - totalCrarar;
 
+//     // Usando agora a coluna castracao explícita ou o termo no tratamento
 //     const castracoes = periodAtendimentos.filter(at => 
+//       at.castracao === true ||
 //       at.tratamento.toLowerCase().includes('castra') || 
 //       at.diagnostico.toLowerCase().includes('castra')
 //     );
@@ -188,17 +189,15 @@
 //     setIsGenerating(true);
     
 //     try {
-//       // Configuramos o html2canvas para ignorar o viewport atual e usar dimensões A4 fixas
 //       const canvas = await html2canvas(reportRef.current, { 
-//         scale: 2, // Resolução 2x para nitidez sem lentidão excessiva no mobile
+//         scale: 2, 
 //         useCORS: true,
 //         logging: false,
 //         backgroundColor: '#ffffff',
-//         width: 794, // Largura A4 padrão em pixels (96dpi)
-//         height: 1123, // Altura A4 padrão em pixels (96dpi)
-//         windowWidth: 794, // Força o layout como se estivesse em uma tela de 210mm
+//         width: 794, 
+//         height: 1123, 
+//         windowWidth: 794, 
 //         onclone: (clonedDoc) => {
-//           // Garantimos que no clone usado para captura, o elemento não tenha transforms
 //           const element = clonedDoc.querySelector('[data-report-container]');
 //           if (element) {
 //             (element as HTMLElement).style.transform = 'none';
@@ -214,7 +213,6 @@
 //         compress: true
 //       });
       
-//       // Mapeamento direto para as dimensões milimétricas do A4
 //       pdf.addImage(imgData, 'JPEG', 0, 0, 210, 297, undefined, 'FAST');
 //       pdf.save(`Relatorio_CRARAR_${reportDates.start}_ate_${reportDates.end}.pdf`);
 //     } catch (err) {
@@ -227,6 +225,11 @@
 
 //   const crararTutorIds = tutores.filter(t => t.nome.toUpperCase() === 'CRARAR').map(t => t.id);
 //   const institutionalAnimalsCount = animais.filter(a => crararTutorIds.includes(a.tutor_id)).length;
+  
+//   // Contador de castrados no período filtrado
+//   const castradosNoPeriodo = useMemo(() => {
+//     return filteredData.atendimentos.filter(at => at.castracao === true).length;
+//   }, [filteredData.atendimentos]);
 
 //   return (
 //     <div className="space-y-8 animate-fade-in">
@@ -240,10 +243,10 @@
 //             onClick={() => setShowReportModal(true)}
 //             className="flex items-center gap-2 rounded-2xl bg-crarar-primary text-white px-5 py-2.5 text-xs font-bold hover:bg-crarar-primary/90 transition-all shadow-lg shadow-crarar-primary/20"
 //           >
-//             <FileText className="h-4 w-4" /> Gerar Relatório A4
+//             <FileText className="h-4 w-4" /> Relatório PDF
 //           </button>
 
-          
+                
 //           {/* <div className="flex bg-slate-100 dark:bg-slate-800 p-1.5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-inner">
 //             {(['Mes', 'Trimestre', 'Semestre', 'Ano'] as Period[]).map((p) => (
 //               <button
@@ -258,33 +261,47 @@
 //             ))}
 //           </div> */}
 
-          
-//           <div className="relative flex items-center bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-1.5 shadow-sm hover:border-crarar-primary transition-all group">
-//   <Filter className="h-3.5 w-3.5 text-slate-400 mr-2 group-hover:text-crarar-primary transition-colors" />
-//   <select
-//     value={period}
-//     onChange={(e) => setPeriod(e.target.value as Period)}
-//     className="bg-transparent text-[11px] font-black uppercase tracking-widest text-slate-600 dark:text-slate-300 outline-none cursor-pointer appearance-none pr-6"
-//   >
-//     <option value="Mes">Mensal</option>
-//     <option value="Trimestre">Trimestral</option>
-//     <option value="Semestre">Semestral</option>
-//     <option value="Ano">Anual</option>
-//   </select>
-//   {/* Ícone de seta posicionado à direita */}
-//   <div className="pointer-events-none absolute right-2 flex items-center text-slate-400">
-//     <ChevronRight className="h-3.5 w-3.5 rotate-90" />
-//   </div>
-// </div>
-
+//                 {/* NOVA SELEÇÃO DE MêS */}
+//                 <div className="flex bg-slate-100 dark:bg-slate-800 p-1.5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-inner">
+//                   {/* Dropdown para Mobile */}
+//                   <select
+//                     value={period}
+//                     onChange={(e) => setPeriod(e.target.value)}
+//                     className="block md:hidden w-full bg-transparent text-[10px] font-black uppercase tracking-widest text-slate-900 dark:text-white focus:outline-none px-2"
+//                   >
+//                     {['Mes', 'Trimestre', 'Semestre', 'Ano'].map((p) => (
+//                       <option key={p} value={p}>{p}</option>
+//                     ))}
+//                   </select>
+                
+//                   {/* Botões para Desktop (md:flex esconde abaixo de 768px) */}
+//                   <div className="hidden md:flex">
+//                     {(['Mes', 'Trimestre', 'Semestre', 'Ano'] as Period[]).map((p) => (
+//                       <button
+//                         key={p}
+//                         onClick={() => setPeriod(p)}
+//                         className={`px-4 py-1.5 text-[10px] font-black uppercase tracking-widest rounded-xl transition-all ${
+//                           period === p 
+//                             ? 'bg-white dark:bg-slate-700 text-slate-900 dark:text-white shadow-sm' 
+//                             : 'text-slate-400 hover:text-slate-500'
+//                         }`}
+//                       >
+//                         {p}
+//                       </button>
+//                     ))}
+//                   </div>
+//                 </div>
+//  {/* FIM DA NOVA SELEÇÃO DE MêS */}
+                
 //         </div>
 //       </div>
 
-//       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+//       <div className="grid grid-cols-1 gap-4 md:gap-6 sm:grid-cols-2 lg:grid-cols-5">
 //         {[
 //           { label: 'Consultas', value: filteredData.atendimentos.length, icon: Stethoscope, color: 'text-purple-600', bg: 'bg-purple-50' },
 //           { label: 'Novos Pets', value: filteredData.animais.length, icon: PawPrint, color: 'text-green-600', bg: 'bg-green-50' },
 //           { label: 'Novos Tutores', value: filteredData.tutores.length, icon: Users, color: 'text-blue-600', bg: 'bg-blue-50' },
+//           { label: 'Castrados', value: castradosNoPeriodo, icon: Scissors, color: 'text-emerald-600', bg: 'bg-emerald-50' },
 //           { label: 'Pets CRARAR', value: institutionalAnimalsCount, icon: ShieldCheck, color: 'text-crarar-primary', bg: 'bg-crarar-primary/5' },
 //         ].map((stat, i) => (
 //           <div key={i} className="bg-white dark:bg-slate-900 p-6 rounded-[32px] border border-slate-100 dark:border-slate-800 shadow-sm">
@@ -295,7 +312,7 @@
 //                 <span className={`text-[10px] font-black ${stat.color} uppercase tracking-widest`}>{stat.label}</span>
 //              </div>
 //              <p className="text-3xl font-black text-slate-900 dark:text-white">{stat.value}</p>
-//              <p className="text-[10px] text-slate-400 font-bold mt-1 uppercase tracking-widest">Base Histórica</p>
+//              <p className="text-[10px] text-slate-400 font-bold mt-1 uppercase tracking-widest">No Período</p>
 //           </div>
 //         ))}
 //       </div>
@@ -408,15 +425,22 @@
 //                      ref={reportRef} 
 //                      className="w-[210mm] min-h-[297mm] bg-white p-[20mm] space-y-10 text-slate-900 font-sans relative"
 //                    >
-//                       <div className="absolute inset-0 opacity-[0.02] pointer-events-none flex items-center justify-center overflow-hidden">
+//                       {/* <div className="absolute inset-0 opacity-[0.02] pointer-events-none flex items-center justify-center overflow-hidden">
 //                         <PawPrint className="w-[400px] h-[400px] rotate-12" />
-//                       </div>
+//                       </div> */}
+//                            <div className="absolute inset-0 opacity-[0.02] pointer-events-none flex items-center justify-center overflow-hidden">
+//                                   <img
+//                                     src="/CRARAR_logo.png"
+//                                     alt=""
+//                                     className="w-[500px] select-none"
+//                                   />
+//                                 </div>
 
-//                       {/* <div className="flex items-center justify-between border-b-4 border-crarar-primary pb-8 relative z-10">
+//                       <div className="flex items-center justify-between border-b-4 border-crarar-primary pb-8 relative z-10">
 //                          <div>
 //                             <div className="flex items-center gap-3 mb-2">
-//                                <img src="/CRARAR_logo.png" alt="CRARAR Logo" className="h-8 w-8 text-crarar-primary" />
-//                                <h1 className="text-3xl font-black tracking-tight text-slate-900">RELATÓRIO EXECUTIVO</h1>
+//                                <PawPrint className="h-8 w-8 text-crarar-primary" />
+//                                <h1 className="text-4xl font-black tracking-tight text-slate-900">RELATÓRIO EXECUTIVO</h1>
 //                             </div>
 //                             <p className="text-sm font-bold text-crarar-primary uppercase tracking-[0.2em]">Centro de Referência Animal - CRARAR</p>
 //                          </div>
@@ -425,34 +449,8 @@
 //                             <p className="text-sm font-black">{new Date(reportDates.start).toLocaleDateString('pt-BR')} — {new Date(reportDates.end).toLocaleDateString('pt-BR')}</p>
 //                             <p className="text-[9px] text-slate-400 mt-1">EMISSÃO: {new Date().toLocaleDateString('pt-BR')}</p>
 //                          </div>
-//                       </div> */}
-
-
-
-
-                     
-//                      <div className="text-center mb-8">
-//                           <img src="/CRARAR_logo.png" alt="CRARAR Logo" className="mx-auto w-32 h-auto" />
-//                       </div>
-                      
-//                       <div className="flex items-center justify-between border-b-4 border-crarar-primary pb-8 relative z-10">
-//                           <div>
-//                               <div className="flex items-center gap-3 mb-2">
-//                                  <h1 className="text-4xl font-black tracking-tight text-slate-900">RELATÓRIO EXECUTIVO</h1>
-//                               </div>
-//                               <p className="text-sm font-bold text-crarar-primary uppercase tracking-[0.2em]">Centro de Referência Animal - CRARAR</p>
-//                           </div>
-//                           <div className="text-right">
-//                               <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">PERÍODO DE COMPETÊNCIA</p>
-//                               <p className="text-sm font-black">{new Date(reportDates.start).toLocaleDateString('pt-BR')} — {new Date(reportDates.end).toLocaleDateString('pt-BR')}</p>
-//                               <p className="text-[9px] text-slate-400 mt-1">EMISSÃO: {new Date().toLocaleDateString('pt-BR')}</p>
-//                           </div>
 //                       </div>
 
-
-
-
-                     
 //                       <div className="grid grid-cols-2 gap-8 relative z-10">
 //                          <div className="space-y-6">
 //                             <h3 className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] border-l-4 border-crarar-primary pl-3">EFICIÊNCIA DE ATENDIMENTO</h3>
@@ -512,8 +510,8 @@
 //                                <p className="text-3xl font-black text-crarar-primary">{reportData.stats.totalCrarar}</p>
 //                             </div>
 //                             <div>
-//                                <p className="text-[9px] font-black text-slate-400 uppercase mb-1">Castrações Sociais</p>
-//                                <p className="text-3xl font-black text-emerald-600">{reportData.stats.castracoesComunitarios}</p>
+//                                <p className="text-[9px] font-black text-slate-400 uppercase mb-1">Castrações Totais</p>
+//                                <p className="text-3xl font-black text-emerald-600">{reportData.stats.castracoes}</p>
 //                             </div>
 //                             <div>
 //                                <p className="text-[9px] font-black text-slate-400 uppercase mb-1">Responsáveis Ativos</p>
@@ -535,6 +533,8 @@
 //     </div>
 //   );
 // };
+
+// export default StatsView;
 
 
 
@@ -672,16 +672,17 @@ const StatsView: React.FC<StatsViewProps> = ({ atendimentos, animais, produtos, 
     const totalCrarar = scopeAnimais.filter(a => crararTutorIds.includes(a.tutor_id)).length;
     const totalNormal = scopeAnimais.length - totalCrarar;
 
-    // Usando agora a coluna castracao explícita ou o termo no tratamento
+    // Usando agora a coluna castracao e cirurgia explícitas ou o termo nos campos
     const castracoes = periodAtendimentos.filter(at => 
       at.castracao === true ||
-      at.tratamento.toLowerCase().includes('castra') || 
-      at.diagnostico.toLowerCase().includes('castra')
+      (at.tratamento && at.tratamento.toLowerCase().includes('castra')) || 
+      (at.diagnostico && at.diagnostico.toLowerCase().includes('castra'))
     );
 
     const cirurgiasGerais = periodAtendimentos.filter(at => 
-      at.tratamento.toLowerCase().includes('cirurgia') ||
-      at.diagnostico.toLowerCase().includes('cirurgia')
+      at.cirurgia === true ||
+      (at.tratamento && at.tratamento.toLowerCase().includes('cirurgia')) ||
+      (at.diagnostico && at.diagnostico.toLowerCase().includes('cirurgia'))
     );
 
     const castracoesComunitarios = castracoes.filter(at => {
@@ -729,14 +730,23 @@ const StatsView: React.FC<StatsViewProps> = ({ atendimentos, animais, produtos, 
     setIsGenerating(true);
     
     try {
+      if (document.fonts) {
+        await document.fonts.ready;
+      }
+
+      window.scrollTo(0, 0);
+
       const canvas = await html2canvas(reportRef.current, { 
         scale: 2, 
         useCORS: true,
+        allowTaint: true,
         logging: false,
         backgroundColor: '#ffffff',
         width: 794, 
         height: 1123, 
-        windowWidth: 794, 
+        windowWidth: 794,
+        scrollX: 0,
+        scrollY: 0,
         onclone: (clonedDoc) => {
           const element = clonedDoc.querySelector('[data-report-container]');
           if (element) {
@@ -745,7 +755,7 @@ const StatsView: React.FC<StatsViewProps> = ({ atendimentos, animais, produtos, 
         }
       });
       
-      const imgData = canvas.toDataURL('image/jpeg', 0.92);
+      const imgData = canvas.toDataURL('image/jpeg', 0.95);
       const pdf = new jsPDF({
         orientation: 'portrait',
         unit: 'mm',
@@ -783,11 +793,9 @@ const StatsView: React.FC<StatsViewProps> = ({ atendimentos, animais, produtos, 
             onClick={() => setShowReportModal(true)}
             className="flex items-center gap-2 rounded-2xl bg-crarar-primary text-white px-5 py-2.5 text-xs font-bold hover:bg-crarar-primary/90 transition-all shadow-lg shadow-crarar-primary/20"
           >
-            <FileText className="h-4 w-4" /> Relatório PDF
+            <FileText className="h-4 w-4" /> Gerar Relatório A4
           </button>
-
-                
-          {/* <div className="flex bg-slate-100 dark:bg-slate-800 p-1.5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-inner">
+          <div className="flex bg-slate-100 dark:bg-slate-800 p-1.5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-inner">
             {(['Mes', 'Trimestre', 'Semestre', 'Ano'] as Period[]).map((p) => (
               <button
                 key={p}
@@ -799,40 +807,7 @@ const StatsView: React.FC<StatsViewProps> = ({ atendimentos, animais, produtos, 
                 {p}
               </button>
             ))}
-          </div> */}
-
-                {/* NOVA SELEÇÃO DE MêS */}
-                <div className="flex bg-slate-100 dark:bg-slate-800 p-1.5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-inner">
-                  {/* Dropdown para Mobile */}
-                  <select
-                    value={period}
-                    onChange={(e) => setPeriod(e.target.value)}
-                    className="block md:hidden w-full bg-transparent text-[10px] font-black uppercase tracking-widest text-slate-900 dark:text-white focus:outline-none px-2"
-                  >
-                    {['Mes', 'Trimestre', 'Semestre', 'Ano'].map((p) => (
-                      <option key={p} value={p}>{p}</option>
-                    ))}
-                  </select>
-                
-                  {/* Botões para Desktop (md:flex esconde abaixo de 768px) */}
-                  <div className="hidden md:flex">
-                    {(['Mes', 'Trimestre', 'Semestre', 'Ano'] as Period[]).map((p) => (
-                      <button
-                        key={p}
-                        onClick={() => setPeriod(p)}
-                        className={`px-4 py-1.5 text-[10px] font-black uppercase tracking-widest rounded-xl transition-all ${
-                          period === p 
-                            ? 'bg-white dark:bg-slate-700 text-slate-900 dark:text-white shadow-sm' 
-                            : 'text-slate-400 hover:text-slate-500'
-                        }`}
-                      >
-                        {p}
-                      </button>
-                    ))}
-                  </div>
-                </div>
- {/* FIM DA NOVA SELEÇÃO DE MêS */}
-                
+          </div>
         </div>
       </div>
 
@@ -965,24 +940,27 @@ const StatsView: React.FC<StatsViewProps> = ({ atendimentos, animais, produtos, 
                      ref={reportRef} 
                      className="w-[210mm] min-h-[297mm] bg-white p-[20mm] space-y-10 text-slate-900 font-sans relative"
                    >
-                      {/* <div className="absolute inset-0 opacity-[0.02] pointer-events-none flex items-center justify-center overflow-hidden">
-                        <PawPrint className="w-[400px] h-[400px] rotate-12" />
-                      </div> */}
-                           <div className="absolute inset-0 opacity-[0.02] pointer-events-none flex items-center justify-center overflow-hidden">
-                                  <img
-                                    src="/CRARAR_logo.png"
-                                    alt=""
-                                    className="w-[500px] select-none"
-                                  />
-                                </div>
+                      <div className="absolute inset-0 opacity-[0.04] pointer-events-none flex items-center justify-center overflow-hidden">
+                        <img 
+                          src="/CRARAR_logo.png" 
+                          alt="Watermark" 
+                          style={{ width: '360px', height: '240px', objectFit: 'contain' }} 
+                          className="grayscale" 
+                        />
+                      </div>
 
                       <div className="flex items-center justify-between border-b-4 border-crarar-primary pb-8 relative z-10">
-                         <div>
-                            <div className="flex items-center gap-3 mb-2">
-                               <PawPrint className="h-8 w-8 text-crarar-primary" />
-                               <h1 className="text-4xl font-black tracking-tight text-slate-900">RELATÓRIO EXECUTIVO</h1>
+                         <div className="flex items-center gap-4">
+                            <img 
+                              src="/CRARAR_logo.png" 
+                              alt="Logo CRARAR" 
+                              style={{ width: '96px', height: '64px', objectFit: 'contain', opacity: 0.35 }} 
+                              className="shrink-0 -translate-y-1" 
+                            />
+                            <div>
+                               <h1 className="text-2xl font-black tracking-tight text-slate-900 leading-tight">RELATÓRIO EXECUTIVO</h1>
+                               <p className="text-xs font-bold text-crarar-primary uppercase tracking-wider">Centro de Referência Animal - CRARAR</p>
                             </div>
-                            <p className="text-sm font-bold text-crarar-primary uppercase tracking-[0.2em]">Centro de Referência Animal - CRARAR</p>
                          </div>
                          <div className="text-right">
                             <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">PERÍODO DE COMPETÊNCIA</p>
@@ -993,76 +971,91 @@ const StatsView: React.FC<StatsViewProps> = ({ atendimentos, animais, produtos, 
 
                       <div className="grid grid-cols-2 gap-8 relative z-10">
                          <div className="space-y-6">
-                            <h3 className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] border-l-4 border-crarar-primary pl-3">EFICIÊNCIA DE ATENDIMENTO</h3>
+                            <h3 className="h-4 flex items-center text-[10px] font-black text-slate-400 uppercase tracking-wider border-l-4 border-crarar-primary pl-3 leading-none">
+                              EFICIÊNCIA DE ATENDIMENTO
+                            </h3>
                             <div className="grid grid-cols-2 gap-4">
                                <div className="bg-slate-50 p-6 rounded-[24px]">
                                   <p className="text-[9px] font-bold text-slate-400 uppercase mb-1">Consultas Realizadas</p>
-                                  <p className="text-3xl font-black text-slate-900">{reportData.stats.totalAtendimentos}</p>
+                                  <p className="text-3xl font-black text-slate-900 leading-none">{reportData.stats.totalAtendimentos}</p>
                                </div>
                                <div className="bg-slate-50 p-6 rounded-[24px]">
                                   <p className="text-[9px] font-bold text-slate-400 uppercase mb-1">Óbitos Confirmados</p>
-                                  <p className="text-3xl font-black text-red-500">{reportData.stats.obitosPeriodo}</p>
+                                  <p className="text-3xl font-black text-red-500 leading-none">{reportData.stats.obitosPeriodo}</p>
                                </div>
                             </div>
                          </div>
 
                          <div className="space-y-6">
-                            <h3 className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] border-l-4 border-crarar-primary pl-3">PROCEDIMENTOS CLÍNICOS</h3>
+                            <h3 className="h-4 flex items-center text-[10px] font-black text-slate-400 uppercase tracking-wider border-l-4 border-crarar-primary pl-3 leading-none">
+                              PROCEDIMENTOS CLÍNICOS
+                            </h3>
                             <div className="grid grid-cols-2 gap-4">
                                <div className="bg-slate-50 p-6 rounded-[24px]">
                                   <p className="text-[9px] font-bold text-slate-400 uppercase mb-1">Total de Castrações</p>
-                                  <p className="text-3xl font-black text-emerald-600">{reportData.stats.castracoes}</p>
+                                  <p className="text-3xl font-black text-emerald-600 leading-none">{reportData.stats.castracoes}</p>
                                </div>
                                <div className="bg-slate-50 p-6 rounded-[24px]">
                                   <p className="text-[9px] font-bold text-slate-400 uppercase mb-1">Cirurgias Gerais</p>
-                                  <p className="text-3xl font-black text-blue-600">{reportData.stats.cirurgiasGerais}</p>
+                                  <p className="text-3xl font-black text-blue-600 leading-none">{reportData.stats.cirurgiasGerais}</p>
                                </div>
                             </div>
                          </div>
                       </div>
 
                       <div className="space-y-6 relative z-10">
-                         <h3 className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] border-l-4 border-crarar-primary pl-3">CENSO POPULACIONAL (COMPOSIÇÃO)</h3>
+                         <div className="flex items-center justify-between">
+                            <h3 className="h-4 flex items-center text-[10px] font-black text-slate-400 uppercase tracking-wider border-l-4 border-crarar-primary pl-3 leading-none">
+                              CENSO POPULACIONAL (COMPOSIÇÃO)
+                            </h3>
+                            <span className="text-[10px] font-black text-crarar-primary bg-crarar-primary/10 px-3 py-1 rounded-full uppercase tracking-wider">
+                              Total: {reportData.stats.totalAnimais} Animais Cadastrados
+                            </span>
+                         </div>
                          <div className="grid grid-cols-4 gap-6">
                             {reportData.species.map(s => (
                               <div key={s.label} className="border border-slate-100 p-6 rounded-[24px]">
                                  <p className="text-[9px] font-bold text-slate-400 uppercase mb-1">{s.label}</p>
-                                 <p className="text-2xl font-black text-slate-800">{s.value}</p>
+                                 <p className="text-2xl font-black text-slate-800 leading-none mb-1">{s.value}</p>
                                  <p className="text-[9px] font-bold text-crarar-primary">{Math.round(s.percent)}% da base</p>
                               </div>
                             ))}
                          </div>
                       </div>
 
-                      <div className="bg-crarar-primary/5 p-10 rounded-[32px] border border-crarar-primary/10 relative z-10">
+                      <div className="bg-crarar-primary/5 p-8 rounded-[32px] border border-crarar-primary/10 relative z-10">
                          <div className="flex items-center gap-6 mb-8">
-                            <div className="h-16 w-16 rounded-2xl bg-crarar-primary text-white flex items-center justify-center shadow-lg shadow-crarar-primary/20">
-                               <ShieldCheck className="h-8 w-8" />
+                            <div className="h-14 w-14 rounded-2xl bg-crarar-primary text-white flex items-center justify-center shadow-lg shadow-crarar-primary/20 shrink-0">
+                               <ShieldCheck className="h-7 w-7" />
                             </div>
                             <div>
-                               <h3 className="text-2xl font-black text-slate-900">Impacto Institucional CRARAR</h3>
-                               <p className="text-xs font-bold text-slate-500 uppercase tracking-widest">Atuação Social e Comunitária</p>
+                               <h3 className="text-2xl font-black text-slate-900 leading-tight">Impacto Institucional CRARAR</h3>
+                               <p className="text-xs font-bold text-slate-500 uppercase tracking-wider">Atuação Social e Comunitária</p>
                             </div>
                          </div>
-                         <div className="grid grid-cols-3 gap-8">
+                         <div className="grid grid-cols-4 gap-6">
+                            <div>
+                               <p className="text-[9px] font-black text-slate-400 uppercase mb-1">Total de Animais</p>
+                               <p className="text-3xl font-black text-slate-900 leading-none">{reportData.stats.totalAnimais}</p>
+                            </div>
                             <div>
                                <p className="text-[9px] font-black text-slate-400 uppercase mb-1">Pets Institucionais</p>
-                               <p className="text-3xl font-black text-crarar-primary">{reportData.stats.totalCrarar}</p>
+                               <p className="text-3xl font-black text-crarar-primary leading-none">{reportData.stats.totalCrarar}</p>
                             </div>
                             <div>
                                <p className="text-[9px] font-black text-slate-400 uppercase mb-1">Castrações Totais</p>
-                               <p className="text-3xl font-black text-emerald-600">{reportData.stats.castracoes}</p>
+                               <p className="text-3xl font-black text-emerald-600 leading-none">{reportData.stats.castracoes}</p>
                             </div>
                             <div>
                                <p className="text-[9px] font-black text-slate-400 uppercase mb-1">Responsáveis Ativos</p>
-                               <p className="text-3xl font-black text-slate-900">{reportData.stats.totalTutores}</p>
+                               <p className="text-3xl font-black text-slate-900 leading-none">{reportData.stats.totalTutores}</p>
                             </div>
                          </div>
                       </div>
 
-                      <div className="absolute bottom-[20mm] left-[20mm] right-[20mm] pt-10 text-center border-t border-slate-100 z-10">
-                         <p className="text-[9px] font-bold text-slate-300 uppercase tracking-[0.3em]">Documento gerado eletronicamente pelo Sistema CRARAR em {new Date().toLocaleTimeString('pt-BR')}</p>
-                         <p className="text-[8px] text-slate-300 mt-1">A integridade deste relatório é garantida pelos registros digitais criptografados.</p>
+                      <div className="pt-8 text-center border-t border-slate-100 z-10">
+                         <p className="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Documento gerado eletronicamente pelo Sistema CRARAR em {new Date().toLocaleTimeString('pt-BR')}</p>
+                         <p className="text-[8px] text-slate-400 mt-1">A integridade deste relatório é garantida pelos registros digitais criptografados.</p>
                       </div>
                    </div>
                 </div>
@@ -1075,5 +1068,3 @@ const StatsView: React.FC<StatsViewProps> = ({ atendimentos, animais, produtos, 
 };
 
 export default StatsView;
-
-// export default StatsView;
