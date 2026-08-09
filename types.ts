@@ -14,14 +14,20 @@
 //   nome: string;
 //   especie: string;
 //   raca: string;
+//   cor: string;
 //   data_nascimento: string;
 //   sexo: string;
-//   cor: string;
 //   peso: number;
-//   categoria: "crarar" | "normal";
-//   status?: "vivo" | "obito";
+//   status?: 'vivo' | 'obito';
 //   data_adesao: string;
 //   created_at?: string;
+// }
+
+// export interface MedicamentoUsado {
+//   produto_id: string;
+//   nome: string;
+//   quantidade: number;
+//   unidade: string;
 // }
 
 // export interface Atendimento {
@@ -33,6 +39,7 @@
 //   diagnostico: string;
 //   tratamento: string;
 //   medicamentos: string;
+//   medicamentos_json?: MedicamentoUsado[];
 //   observacoes?: string;
 //   proximo_retorno?: string;
 //   obito?: boolean;
@@ -44,7 +51,7 @@
 //   id: string;
 //   email: string;
 //   nome: string;
-//   role: "admin" | "atendente";
+//   role: 'admin' | 'atendente';
 //   ativo: boolean;
 // }
 
@@ -73,10 +80,9 @@
 //   proxima_calibracao?: string;
 //   uso_veterinario?: string;
 //   via_administracao?: string;
-//   status_operacional?: "Ativo" | "Manutenção" | "Inativo";
+//   status_operacional?: 'Ativo' | 'Manutenção' | 'Inativo';
 //   created_at?: string;
 // }
-
 
 export interface Tutor {
   id: string;
@@ -124,6 +130,7 @@ export interface Atendimento {
   proximo_retorno?: string;
   obito?: boolean;
   castracao?: boolean;
+  cirurgia?: boolean;
   created_at?: string;
 }
 
