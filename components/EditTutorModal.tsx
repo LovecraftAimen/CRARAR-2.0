@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
-import { User, Phone, Mail, MapPin, CreditCard, Save, X, CheckCircle2, AlertTriangle, Trash2 } from 'lucide-react';
+import { User, Phone, Mail, CreditCard, Save, X, CheckCircle2, AlertTriangle, Trash2 } from 'lucide-react';
 import { Tutor } from '../types';
 import { supabase } from '../integrations/supabase/client';
+import { formatCep } from '../utils/viaCep';
+import { AddressFields } from './AddressFields';
+import { formatCPF, formatPhone, validateCPF, validatePhone } from '../utils/masks';
 
 interface EditTutorModalProps {
   tutor: Tutor;
@@ -12,10 +15,16 @@ interface EditTutorModalProps {
 export const EditTutorModal: React.FC<EditTutorModalProps> = ({ tutor, onClose, onTutorUpdated }) => {
   const [formData, setFormData] = useState({
     nome: tutor.nome || '',
-    cpf: tutor.cpf || '',
-    telefone: tutor.telefone || '',
+    cpf: tutor.cpf ? formatCPF(tutor.cpf) : '',
+    telefone: tutor.telefone ? formatPhone(tutor.telefone) : '',
     email: tutor.email || '',
-    endereco: tutor.endereco || ''
+    cep: tutor.cep ? formatCep(tutor.cep) : '',
+    endereco: tutor.endereco || '',
+    numero: tutor.numero || '',
+    complemento: tutor.complemento || '',
+    bairro: tutor.bairro || '',
+    cidade: tutor.cidade || '',
+    estado: tutor.estado || ''
   });
 
   const [loading, setLoading] = useState(false);
@@ -24,8 +33,31 @@ export const EditTutorModal: React.FC<EditTutorModalProps> = ({ tutor, onClose, 
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
+  const handleFieldChange = (field: string, value: string) => {
+    setFormData(prev => ({ ...prev, [field]: value }));
+  };
+
+  const handleAddressAutoFill = (updates: any) => {
+    setFormData(prev => ({ ...prev, ...updates }));
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    // Validação de CPF
+    const cpfValidation = validateCPF(formData.cpf);
+    if (!cpfValidation.valid) {
+      setErrorMessage(cpfValidation.message || 'CPF inválido.');
+      return;
+    }
+
+    // Validação de Telefone
+    const phoneValidation = validatePhone(formData.telefone);
+    if (!phoneValidation.valid) {
+      setErrorMessage(phoneValidation.message || 'Telefone inválido.');
+      return;
+    }
+
     setLoading(true);
     setErrorMessage('');
     setSuccessMessage('');
@@ -36,7 +68,13 @@ export const EditTutorModal: React.FC<EditTutorModalProps> = ({ tutor, onClose, 
         telefone: formData.telefone.trim(),
         cpf: formData.cpf.trim() || null,
         email: formData.email.trim() || null,
-        endereco: formData.endereco.trim() || null
+        cep: formData.cep.trim() || null,
+        endereco: formData.endereco.trim() || null,
+        numero: formData.numero.trim() || null,
+        complemento: formData.complemento.trim() || null,
+        bairro: formData.bairro.trim() || null,
+        cidade: formData.cidade.trim() || null,
+        estado: formData.estado.trim() || null,
       };
 
       const { error } = await supabase
@@ -208,9 +246,10 @@ export const EditTutorModal: React.FC<EditTutorModalProps> = ({ tutor, onClose, 
                     <input
                       required
                       type="tel"
+                      maxLength={15}
                       value={formData.telefone}
-                      onChange={(e) => setFormData({ ...formData, telefone: e.target.value })}
-                      className="w-full rounded-2xl border border-slate-200 bg-slate-50/50 py-3.5 pl-12 pr-4 text-sm font-semibold text-slate-800 outline-none focus:bg-white focus:border-crarar-primary focus:ring-4 focus:ring-crarar-primary/10 transition-all"
+                      onChange={(e) => setFormData({ ...formData, telefone: formatPhone(e.target.value) })}
+                      className="w-full rounded-2xl border border-slate-200 bg-slate-50/50 py-3.5 pl-12 pr-4 text-sm font-semibold text-slate-800 font-mono outline-none focus:bg-white focus:border-crarar-primary focus:ring-4 focus:ring-crarar-primary/10 transition-all"
                       placeholder="(00) 00000-0000"
                     />
                   </div>
@@ -219,15 +258,16 @@ export const EditTutorModal: React.FC<EditTutorModalProps> = ({ tutor, onClose, 
                 {/* CPF */}
                 <div>
                   <label className="block text-xs font-black text-slate-500 uppercase tracking-wider mb-2">
-                    CPF
+                    CPF (Opcional - 11 dígitos)
                   </label>
                   <div className="relative">
                     <CreditCard className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-300" />
                     <input
                       type="text"
+                      maxLength={14}
                       value={formData.cpf}
-                      onChange={(e) => setFormData({ ...formData, cpf: e.target.value })}
-                      className="w-full rounded-2xl border border-slate-200 bg-slate-50/50 py-3.5 pl-12 pr-4 text-sm font-semibold text-slate-800 outline-none focus:bg-white focus:border-crarar-primary focus:ring-4 focus:ring-crarar-primary/10 transition-all"
+                      onChange={(e) => setFormData({ ...formData, cpf: formatCPF(e.target.value) })}
+                      className="w-full rounded-2xl border border-slate-200 bg-slate-50/50 py-3.5 pl-12 pr-4 text-sm font-semibold text-slate-800 font-mono outline-none focus:bg-white focus:border-crarar-primary focus:ring-4 focus:ring-crarar-primary/10 transition-all"
                       placeholder="000.000.000-00"
                     />
                   </div>
@@ -250,21 +290,19 @@ export const EditTutorModal: React.FC<EditTutorModalProps> = ({ tutor, onClose, 
                   </div>
                 </div>
 
-                {/* Endereço Completo */}
+                {/* Componente Modular de Campos de Endereço com ViaCEP (Inversa/Direta) e Dropdowns UF/Cidade */}
                 <div className="md:col-span-2">
-                  <label className="block text-xs font-black text-slate-500 uppercase tracking-wider mb-2">
-                    Endereço Completo
-                  </label>
-                  <div className="relative">
-                    <MapPin className="absolute left-4 top-3.5 h-5 w-5 text-slate-300" />
-                    <textarea
-                      rows={3}
-                      value={formData.endereco}
-                      onChange={(e) => setFormData({ ...formData, endereco: e.target.value })}
-                      className="w-full rounded-2xl border border-slate-200 bg-slate-50/50 py-3 pl-12 pr-4 text-sm font-semibold text-slate-800 outline-none focus:bg-white focus:border-crarar-primary focus:ring-4 focus:ring-crarar-primary/10 transition-all resize-none"
-                      placeholder="Rua, número, bairro, cidade, complemento..."
-                    />
-                  </div>
+                  <AddressFields
+                    cep={formData.cep}
+                    endereco={formData.endereco}
+                    numero={formData.numero}
+                    complemento={formData.complemento}
+                    bairro={formData.bairro}
+                    cidade={formData.cidade}
+                    estado={formData.estado}
+                    onChange={handleFieldChange}
+                    onAddressAutoFill={handleAddressAutoFill}
+                  />
                 </div>
 
               </div>

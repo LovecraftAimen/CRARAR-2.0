@@ -23,7 +23,6 @@ const AnimalForm: React.FC<AnimalFormProps> = ({ tutores, onSave }) => {
     nome: "",
     especie: "Cão",
     raca: "",
-    cor: "",
     data_nascimento: "",
     sexo: "Macho",
     peso: 0,
@@ -33,48 +32,30 @@ const AnimalForm: React.FC<AnimalFormProps> = ({ tutores, onSave }) => {
   const [tutorSearch, setTutorSearch] = useState("");
   const [showTutorList, setShowTutorList] = useState(false);
 
-  // Seleciona automaticamente o tutor institucional quando a categoria UI muda
-  // useEffect(() => {
-  //   if (uiCategory === "crarar") {
-  //     const crararTutor = tutores.find(
-  //       (t) => t.nome.toUpperCase() === "CRARAR",
-  //     );
-  //     if (crararTutor) {
-  //       setFormData((prev) => ({ ...prev, tutor_id: crararTutor.id }));
-  //     }
-  //   } else {
-  //     const crararTutor = tutores.find(
-  //       (t) => t.nome.toUpperCase() === "CRARAR",
-  //     );
-  //     if (formData.tutor_id === crararTutor?.id) {
-  //       setFormData((prev) => ({ ...prev, tutor_id: "" }));
-  //     }
-  //   }
-  // }, [uiCategory, tutores]);
-        useEffect(() => {
-          const crararTutor = tutores.find(
-            (t) => t.nome.toUpperCase() === "CRARAR"
-          );
-        
-          if (uiCategory === "crarar") {
-            if (crararTutor) {
-              setFormData((prev) => ({
-                ...prev,
-                tutor_id: crararTutor.id,
-              }));
-              setTutorSearch(crararTutor.nome);
-              setShowTutorList(false);
-            }
-          } else {
-            if (formData.tutor_id === crararTutor?.id) {
-              setFormData((prev) => ({
-                ...prev,
-                tutor_id: "",
-              }));
-              setTutorSearch("");
-            }
-          }
-        }, [uiCategory, tutores]);
+  useEffect(() => {
+    const crararTutor = tutores.find(
+      (t) => t.nome.toUpperCase() === "CRARAR"
+    );
+
+    if (uiCategory === "crarar") {
+      if (crararTutor) {
+        setFormData((prev) => ({
+          ...prev,
+          tutor_id: crararTutor.id,
+        }));
+        setTutorSearch(crararTutor.nome);
+        setShowTutorList(false);
+      }
+    } else {
+      if (formData.tutor_id === crararTutor?.id) {
+        setFormData((prev) => ({
+          ...prev,
+          tutor_id: "",
+        }));
+        setTutorSearch("");
+      }
+    }
+  }, [uiCategory, tutores]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -92,7 +73,7 @@ const AnimalForm: React.FC<AnimalFormProps> = ({ tutores, onSave }) => {
         nome: formData.nome.trim(),
         especie: formData.especie,
         raca: formData.raca.trim(),
-        cor: formData.cor.trim(), // Valor padrão para evitar erro de NOT NULL no banco de dados
+        cor: "", // Valor padrão para evitar erro de NOT NULL no banco de dados
         data_nascimento: formData.data_nascimento,
         sexo: formData.sexo,
         peso: isNaN(formData.peso) ? 0 : formData.peso,
@@ -106,18 +87,18 @@ const AnimalForm: React.FC<AnimalFormProps> = ({ tutores, onSave }) => {
         nome: "",
         especie: "Cão",
         raca: "",
-        cor: "",
         data_nascimento: "",
         sexo: "Macho",
         peso: 0,
         microchip: "",
       });
+      setTutorSearch("");
       setUiCategory("normal");
       alert("Animal cadastrado com sucesso!");
     } catch (err: any) {
       console.error("Erro ao cadastrar animal:", err);
       alert(
-        `Erro ao cadastrar animal: ${err.message || "Verifique os dados e tente novamente."}`,
+        `Erro ao cadastrar animal: ${err.message || "Verifique os dados e tente novamente."}`
       );
     } finally {
       setLoading(false);
@@ -173,102 +154,80 @@ const AnimalForm: React.FC<AnimalFormProps> = ({ tutores, onSave }) => {
               : "Tutor Responsável *"}
           </label>
           <div className="relative">
-            <User className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
-            {/* <select
-              required
-              value={formData.tutor_id}
-              onChange={(e) =>
-                setFormData({ ...formData, tutor_id: e.target.value })
-              }
+            <User className="absolute left-3 top-3 h-5 w-5 text-gray-400 z-10" />
+
+            <input
+              type="text"
+              value={tutorSearch}
+              placeholder="Digite o nome do tutor..."
               disabled={uiCategory === "crarar"}
-              className={`w-full appearance-none rounded-xl border border-gray-200 bg-gray-50 py-3 pl-10 pr-4 text-sm focus:ring-2 focus:ring-crarar-primary outline-none transition-all ${
-                uiCategory === "crarar" ? "opacity-70 cursor-not-allowed" : ""
+              onFocus={() => {
+                if (uiCategory !== "crarar") {
+                  setShowTutorList(true);
+                }
+              }}
+              onChange={(e) => {
+                const value = e.target.value;
+
+                setTutorSearch(value);
+
+                // Ao digitar novamente, remove a seleção anterior
+                setFormData((prev) => ({
+                  ...prev,
+                  tutor_id: "",
+                }));
+
+                setShowTutorList(true);
+              }}
+              className={`w-full rounded-xl border border-gray-200 bg-gray-50 py-3 pl-10 pr-4 text-sm focus:ring-2 focus:ring-crarar-primary outline-none transition-all ${
+                uiCategory === "crarar"
+                  ? "opacity-70 cursor-not-allowed"
+                  : ""
               }`}
-            >
-              <option value="">Selecione...</option>
-              {tutores.map((t) => (
-                <option key={t.id} value={t.id}>
-                  {t.nome}
-                </option>
-              ))}
-            </select> */}
+            />
 
-                  <div className="relative">
-  <User className="absolute left-3 top-3 h-5 w-5 text-gray-400 z-10" />
+            {showTutorList && uiCategory !== "crarar" && (
+              <div className="absolute z-50 mt-2 w-full max-h-60 overflow-y-auto rounded-xl border border-gray-200 bg-white shadow-xl">
+                {tutores
+                  .filter((t) => {
+                    const search = tutorSearch.toLowerCase().trim();
 
-  <input
-    type="text"
-    value={tutorSearch}
-    placeholder="Digite o nome do tutor..."
-    disabled={uiCategory === "crarar"}
-    onFocus={() => {
-      if (uiCategory !== "crarar") {
-        setShowTutorList(true);
-      }
-    }}
-    onChange={(e) => {
-      const value = e.target.value;
+                    if (!search) return true;
 
-      setTutorSearch(value);
+                    return t.nome.toLowerCase().includes(search);
+                  })
+                  .map((t) => (
+                    <button
+                      key={t.id}
+                      type="button"
+                      onClick={() => {
+                        setFormData((prev) => ({
+                          ...prev,
+                          tutor_id: t.id,
+                        }));
 
-      // Ao digitar novamente, remove a seleção anterior
-      setFormData((prev) => ({
-        ...prev,
-        tutor_id: "",
-      }));
+                        setTutorSearch(t.nome);
+                        setShowTutorList(false);
+                      }}
+                      className="w-full px-4 py-3 text-left text-sm font-medium text-gray-700 hover:bg-crarar-primary/10 hover:text-crarar-primary transition-colors border-b border-gray-50 last:border-b-0"
+                    >
+                      {t.nome}
+                    </button>
+                  ))}
 
-      setShowTutorList(true);
-    }}
-    className={`w-full rounded-xl border border-gray-200 bg-gray-50 py-3 pl-10 pr-4 text-sm focus:ring-2 focus:ring-crarar-primary outline-none transition-all ${
-      uiCategory === "crarar"
-        ? "opacity-70 cursor-not-allowed"
-        : ""
-    }`}
-  />
+                {tutores.filter((t) => {
+                  const search = tutorSearch.toLowerCase().trim();
 
-  {showTutorList && uiCategory !== "crarar" && (
-    <div className="absolute z-50 mt-2 w-full max-h-60 overflow-y-auto rounded-xl border border-gray-200 bg-white shadow-xl">
-      {tutores
-        .filter((t) => {
-          const search = tutorSearch.toLowerCase().trim();
+                  if (!search) return true;
 
-          if (!search) return true;
-
-          return t.nome.toLowerCase().includes(search);
-        })
-        .map((t) => (
-          <button
-            key={t.id}
-            type="button"
-            onClick={() => {
-              setFormData((prev) => ({
-                ...prev,
-                tutor_id: t.id,
-              }));
-
-              setTutorSearch(t.nome);
-              setShowTutorList(false);
-            }}
-            className="w-full px-4 py-3 text-left text-sm font-medium text-gray-700 hover:bg-crarar-primary/10 hover:text-crarar-primary transition-colors border-b border-gray-50 last:border-b-0"
-          >
-            {t.nome}
-          </button>
-        ))}
-
-      {tutores.filter((t) => {
-        const search = tutorSearch.toLowerCase().trim();
-
-        if (!search) return true;
-
-        return t.nome.toLowerCase().includes(search);
-      }).length === 0 && (
-        <div className="px-4 py-4 text-sm text-gray-400 text-center">
-          Nenhum tutor encontrado.
-        </div>
-      )}
-    </div>
-  )}
-</div>
+                  return t.nome.toLowerCase().includes(search);
+                }).length === 0 && (
+                  <div className="px-4 py-4 text-sm text-gray-400 text-center">
+                    Nenhum tutor encontrado.
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         </div>
 
@@ -329,22 +288,6 @@ const AnimalForm: React.FC<AnimalFormProps> = ({ tutores, onSave }) => {
               }
               className="w-full rounded-xl border border-gray-200 bg-gray-50 py-3 px-4 text-sm focus:ring-2 focus:ring-crarar-primary outline-none transition-all"
               placeholder="Ex: Labrador"
-            />
-          </div>
-
-          <div>
-            <label className="block text-xs font-bold text-gray-500 uppercase mb-1">
-              Cor
-            </label>
-          
-            <input
-              type="text"
-              value={formData.cor}
-              onChange={(e) =>
-                setFormData({ ...formData, cor: e.target.value })
-              }
-              className="w-full rounded-xl border border-gray-200 bg-gray-50 py-3 px-4 text-sm focus:ring-2 focus:ring-crarar-primary outline-none transition-all"
-              placeholder="Ex: Preto e branco"
             />
           </div>
 
@@ -418,24 +361,24 @@ const AnimalForm: React.FC<AnimalFormProps> = ({ tutores, onSave }) => {
           </div>
         </div>
 
-              <div>
-  <label className="block text-xs font-bold text-gray-500 uppercase mb-1">
-    Microchip
-  </label>
-  <div className="relative">
-    <Info className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
-    <input
-      type="text"
-      value={formData.microchip}
-      onChange={(e) =>
-        setFormData({ ...formData, microchip: e.target.value })
-      }
-      className="w-full rounded-xl border border-gray-200 bg-gray-50 py-3 pl-10 pr-4 text-sm focus:ring-2 focus:ring-crarar-primary outline-none transition-all"
-      placeholder="Ex: 985141000123456"
-      maxLength={50}
-    />
-  </div>
-</div>
+        <div>
+          <label className="block text-xs font-bold text-gray-500 uppercase mb-1">
+            Microchip
+          </label>
+          <div className="relative">
+            <Info className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
+            <input
+              type="text"
+              value={formData.microchip}
+              onChange={(e) =>
+                setFormData({ ...formData, microchip: e.target.value })
+              }
+              className="w-full rounded-xl border border-gray-200 bg-gray-50 py-3 pl-10 pr-4 text-sm focus:ring-2 focus:ring-crarar-primary outline-none transition-all"
+              placeholder="Ex: 985141000123456"
+              maxLength={50}
+            />
+          </div>
+        </div>
 
         <button
           disabled={loading || tutores.length === 0}
@@ -457,4 +400,3 @@ const AnimalForm: React.FC<AnimalFormProps> = ({ tutores, onSave }) => {
 };
 
 export default AnimalForm;
-// export default AnimalForm;

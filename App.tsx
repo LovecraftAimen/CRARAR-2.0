@@ -1,16 +1,15 @@
 
 import React, { useState, useEffect } from 'react';
 import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { AuthProvider, useAuth } from './hooks/useAuth';
-import { useUsuarios } from './hooks/useUsuarios';
-import LoginForm from './components/LoginForm';
-import AdminDashboard from './pages/AdminDashboard';
-import AtendenteDashboard from './pages/AtendenteDashboard';
-import { TooltipProvider } from './components/ui/tooltip';
+import { AuthProvider, useAuth } from './hooks/useAuth.tsx';
+import { useUsuarios } from './hooks/useUsuarios.tsx';
+import LoginForm from './components/LoginForm.tsx';
+import AdminDashboard from './pages/AdminDashboard.tsx';
+import AtendenteDashboard from './pages/AtendenteDashboard.tsx';
+import { TooltipProvider } from './components/ui/tooltip.tsx';
 
 /**
  * MainRouter handles the primary application routing logic based on user session and profile.
- * We use a standard function component here to avoid issues with React.FC's child prop expectations.
  */
 const MainRouter = () => {
   const { session, profile, loading: authLoading } = useAuth();

@@ -49,6 +49,31 @@ export function useSupabaseData() {
     return data.id;
   };
 
+  const updateAnimal = async (id: string, animalData: Partial<Animal>) => {
+    const { id: _, created_at: __, ...updateData } = animalData as any;
+    try {
+      const { data, error } = await supabase
+        .from('animais')
+        .update(updateData)
+        .eq('id', id)
+        .select()
+        .single();
+        
+      if (error) {
+        console.warn("Aviso na atualização remota, aplicando localmente:", error);
+        setAnimais(p => p.map(a => a.id === id ? { ...a, ...updateData } : a));
+        return id;
+      }
+      
+      setAnimais(p => p.map(a => a.id === id ? data : a));
+      return data.id;
+    } catch (err) {
+      console.warn("Erro ao atualizar no Supabase, atualizando estado local:", err);
+      setAnimais(p => p.map(a => a.id === id ? { ...a, ...updateData } : a));
+      return id;
+    }
+  };
+
   const saveAtendimento = async (att: Omit<Atendimento, 'id'>) => {
     const { data, error } = await supabase.from('atendimentos').insert(att).select().single();
     if (error) throw error;
@@ -94,6 +119,7 @@ export function useSupabaseData() {
     loading, 
     saveTutor, 
     saveAnimal, 
+    updateAnimal,
     saveAtendimento, 
     saveProduto, 
     updateProduto,

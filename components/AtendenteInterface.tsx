@@ -9,16 +9,18 @@ import {
   LogOut, 
   Plus, 
   Bell,
-  CheckCircle2
+  CheckCircle2,
+  Heart
 } from 'lucide-react';
 import TutorForm from './TutorForm';
 import AnimalForm from './AnimalForm';
 import SearchResults from './SearchResults';
+import Adocao from './Adocao';
 
 const AtendenteInterface: React.FC = () => {
   const { currentUsuario, logoutUsuario } = useUsuarios();
-  const { tutores, animais, atendimentos, saveTutor, saveAnimal } = useSupabaseData();
-  const [activeTab, setActiveTab] = useState<'tutor' | 'animal' | 'search'>('search');
+  const { tutores, animais, atendimentos, saveTutor, saveAnimal, updateAnimal } = useSupabaseData();
+  const [activeTab, setActiveTab] = useState<'tutor' | 'animal' | 'search' | 'adocao'>('search');
 
   return (
     <div className="min-h-screen bg-crarar-light">
@@ -54,6 +56,7 @@ const AtendenteInterface: React.FC = () => {
               { id: 'search', label: 'Busca', icon: Search },
               { id: 'tutor', label: 'Tutor', icon: Users },
               { id: 'animal', label: 'Pet', icon: PawPrint },
+              { id: 'adocao', label: 'Adoção', icon: Heart },
             ].map((tab) => (
               <button
                 key={tab.id}
@@ -103,6 +106,7 @@ const AtendenteInterface: React.FC = () => {
           )}
           {activeTab === 'tutor' && <TutorForm onSave={saveTutor} />}
           {activeTab === 'animal' && <AnimalForm tutores={tutores} onSave={saveAnimal} />}
+          {activeTab === 'adocao' && <Adocao animais={animais} tutores={tutores} onUpdateAnimal={updateAnimal} />}
         </div>
       </main>
     </div>
