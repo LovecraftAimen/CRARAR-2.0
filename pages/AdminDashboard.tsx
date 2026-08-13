@@ -332,6 +332,14 @@ const AdminDashboard: React.FC = () => {
     });
   };
 
+  const obituarioIds = useMemo(() => {
+    return animais.filter(a => atendimentos.some(at => at.animal_id === a.id && at.obito === true)).map(a => a.id);
+  }, [animais, atendimentos]);
+
+  const animaisAtivos = useMemo(() => {
+    return animais.filter(a => !obituarioIds.includes(a.id));
+  }, [animais, obituarioIds]);
+
   const getPacientesClinica = () => {
     const obituarioIds = getObituario().map(o => o.id);
     return animais.filter(a => 
@@ -488,7 +496,7 @@ const AdminDashboard: React.FC = () => {
                     <h3 className="text-lg font-bold text-slate-900 dark:text-white">Consultas Recentes</h3>
                   </div>
                   <div className="divide-y divide-slate-50 dark:divide-slate-800 overflow-hidden rounded-2xl border border-slate-50 dark:border-slate-800">
-                    {atendimentos.slice(0, 5).map((at, idx) => (
+                    {atendimentos.filter(at => !obituarioIds.includes(at.animal_id)).slice(0, 5).map((at, idx) => (
                       <div key={idx} className="flex items-center justify-between p-5 hover:bg-slate-50/50 dark:hover:bg-slate-800/50 transition-colors">
                         <div className="flex items-center gap-4 overflow-hidden">
                           <div className="h-11 w-11 rounded-xl bg-slate-50 dark:bg-slate-800 flex items-center justify-center text-crarar-primary shrink-0">
@@ -907,11 +915,11 @@ const AdminDashboard: React.FC = () => {
           <div className="max-w-full overflow-hidden">
             {activeView === 'tutores' && <TutorForm onSave={saveTutor} />}
             {activeView === 'animais' && <AnimalForm tutores={tutores} onSave={saveAnimal} />}
-            {activeView === 'adocao' && <Adocao animais={animais} tutores={tutores} onUpdateAnimal={updateAnimal} />}
-            {activeView === 'atendimentos' && <AtendimentoForm animais={animais} tutores={tutores} onSave={saveAtendimento} />}
-            {activeView === 'search' && <SearchResults tutores={tutores} animais={animais} atendimentos={atendimentos} userRole="admin" />}
-            {activeView === 'pacientes' && <SearchPacientes tutores={tutores} animais={animais} atendimentos={atendimentos} />}
-            {activeView === 'adotados' && <AdotadosList animais={animais} tutores={tutores} atendimentos={atendimentos} />}
+            {activeView === 'adocao' && <Adocao animais={animaisAtivos} tutores={tutores} onUpdateAnimal={updateAnimal} />}
+            {activeView === 'atendimentos' && <AtendimentoForm animais={animaisAtivos} tutores={tutores} onSave={saveAtendimento} />}
+            {activeView === 'search' && <SearchResults tutores={tutores} animais={animaisAtivos} atendimentos={atendimentos} userRole="admin" />}
+            {activeView === 'pacientes' && <SearchPacientes tutores={tutores} animais={animaisAtivos} atendimentos={atendimentos} />}
+            {activeView === 'adotados' && <AdotadosList animais={animaisAtivos} tutores={tutores} atendimentos={atendimentos} />}
             {activeView === 'stats' && <StatsView tutores={tutores} animais={animais} atendimentos={atendimentos} produtos={produtos} />}
             {activeView === 'obituario' && (
               <div className="space-y-8 max-w-5xl mx-auto">
