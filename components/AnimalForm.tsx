@@ -108,25 +108,25 @@ const AnimalForm: React.FC<AnimalFormProps> = ({ tutores, onSave }) => {
   const speciesList = ["Cão", "Gato", "Ave", "Outro"];
 
   return (
-    <div className="mx-auto w-full max-w-2xl rounded-3xl bg-white p-5 md:p-8 shadow-sm border border-gray-100">
+    <div className="mx-auto w-full max-w-2xl rounded-3xl bg-white dark:bg-slate-900 p-5 md:p-8 shadow-sm border border-gray-100 dark:border-slate-800">
       <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-center gap-3">
           <div className="rounded-xl bg-green-500/10 p-2">
-            <PawPrint className="h-6 w-6 text-green-600" />
+            <PawPrint className="h-6 w-6 text-green-600 dark:text-green-400" />
           </div>
-          <h3 className="text-lg md:text-xl font-bold text-crarar-text">
+          <h3 className="text-lg md:text-xl font-bold text-slate-900 dark:text-white">
             Novo Pet
           </h3>
         </div>
 
-        <div className="flex items-center gap-1 rounded-xl bg-gray-50 p-1 ring-1 ring-gray-200">
+        <div className="flex items-center gap-1 rounded-xl bg-gray-50 dark:bg-slate-800 p-1 ring-1 ring-gray-200 dark:ring-slate-700">
           <button
             type="button"
             onClick={() => setUiCategory("normal")}
             className={`rounded-lg px-3 py-1.5 text-[10px] md:text-xs font-bold transition-all ${
               uiCategory === "normal"
-                ? "bg-white text-crarar-text shadow-sm"
-                : "text-gray-400"
+                ? "bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm"
+                : "text-gray-400 dark:text-slate-400"
             }`}
           >
             Comum
@@ -137,7 +137,7 @@ const AnimalForm: React.FC<AnimalFormProps> = ({ tutores, onSave }) => {
             className={`flex items-center gap-1 rounded-lg px-3 py-1.5 text-[10px] md:text-xs font-bold transition-all ${
               uiCategory === "crarar"
                 ? "bg-crarar-primary text-white shadow-sm"
-                : "text-gray-400"
+                : "text-gray-400 dark:text-slate-400"
             }`}
           >
             <ShieldCheck className="h-3 w-3" />
@@ -148,7 +148,7 @@ const AnimalForm: React.FC<AnimalFormProps> = ({ tutores, onSave }) => {
 
       <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6">
         <div>
-          <label className="block text-xs font-bold text-gray-500 uppercase mb-1">
+          <label className="block text-xs font-bold text-slate-500 dark:text-slate-300 uppercase mb-1">
             {uiCategory === "crarar"
               ? "Responsável Institucional *"
               : "Tutor Responsável *"}
@@ -179,7 +179,7 @@ const AnimalForm: React.FC<AnimalFormProps> = ({ tutores, onSave }) => {
 
                 setShowTutorList(true);
               }}
-              className={`w-full rounded-xl border border-gray-200 bg-gray-50 py-3 pl-10 pr-4 text-sm focus:ring-2 focus:ring-crarar-primary outline-none transition-all ${
+              className={`w-full rounded-xl border border-gray-200 dark:border-slate-800 bg-gray-50 dark:bg-slate-950 py-3 pl-10 pr-4 text-sm text-slate-900 dark:text-white placeholder:text-slate-400 focus:ring-2 focus:ring-crarar-primary outline-none transition-all ${
                 uiCategory === "crarar"
                   ? "opacity-70 cursor-not-allowed"
                   : ""
@@ -187,7 +187,7 @@ const AnimalForm: React.FC<AnimalFormProps> = ({ tutores, onSave }) => {
             />
 
             {showTutorList && uiCategory !== "crarar" && (
-              <div className="absolute z-50 mt-2 w-full max-h-60 overflow-y-auto rounded-xl border border-gray-200 bg-white shadow-xl">
+              <div className="absolute z-50 mt-2 w-full max-h-60 overflow-y-auto rounded-xl border border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-xl">
                 {tutores
                   .filter((t) => {
                     const search = tutorSearch.toLowerCase().trim();
@@ -209,7 +209,7 @@ const AnimalForm: React.FC<AnimalFormProps> = ({ tutores, onSave }) => {
                         setTutorSearch(t.nome);
                         setShowTutorList(false);
                       }}
-                      className="w-full px-4 py-3 text-left text-sm font-medium text-gray-700 hover:bg-crarar-primary/10 hover:text-crarar-primary transition-colors border-b border-gray-50 last:border-b-0"
+                      className="w-full px-4 py-3 text-left text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-crarar-primary/10 hover:text-crarar-primary transition-colors border-b border-gray-50 dark:border-slate-800 last:border-b-0"
                     >
                       {t.nome}
                     </button>
@@ -234,7 +234,7 @@ const AnimalForm: React.FC<AnimalFormProps> = ({ tutores, onSave }) => {
         <div className="grid grid-cols-1 gap-4 md:gap-6 sm:grid-cols-2">
           {/* Nome do Pet na Esquerda */}
           <div>
-            <label className="block text-xs font-bold text-gray-500 uppercase mb-1">
+            <label className="block text-xs font-bold text-slate-500 dark:text-slate-300 uppercase mb-1">
               Nome do Pet *
             </label>
             <div className="relative">
@@ -246,7 +246,7 @@ const AnimalForm: React.FC<AnimalFormProps> = ({ tutores, onSave }) => {
                 onChange={(e) =>
                   setFormData({ ...formData, nome: e.target.value })
                 }
-                className="w-full rounded-xl border border-gray-200 bg-gray-50 py-3 pl-10 pr-4 text-sm focus:ring-2 focus:ring-crarar-primary outline-none transition-all"
+                className="w-full rounded-xl border border-gray-200 dark:border-slate-800 bg-gray-50 dark:bg-slate-950 py-3 pl-10 pr-4 text-sm text-slate-900 dark:text-white placeholder:text-slate-400 focus:ring-2 focus:ring-crarar-primary outline-none transition-all"
                 placeholder="Ex: Rex"
               />
             </div>
@@ -254,7 +254,7 @@ const AnimalForm: React.FC<AnimalFormProps> = ({ tutores, onSave }) => {
 
           {/* Espécie na Direita */}
           <div>
-            <label className="block text-xs font-bold text-gray-500 uppercase mb-2">
+            <label className="block text-xs font-bold text-slate-500 dark:text-slate-300 uppercase mb-2">
               Espécie *
             </label>
             <div className="flex flex-wrap gap-2">
@@ -266,7 +266,7 @@ const AnimalForm: React.FC<AnimalFormProps> = ({ tutores, onSave }) => {
                   className={`rounded-lg px-3 py-1.5 text-[10px] font-semibold transition-all ${
                     formData.especie === s
                       ? "bg-crarar-primary text-white shadow-sm"
-                      : "bg-gray-100 text-gray-500 hover:bg-gray-200"
+                      : "bg-gray-100 dark:bg-slate-800 text-gray-500 dark:text-slate-300 hover:bg-gray-200 dark:hover:bg-slate-700"
                   }`}
                 >
                   {s}
@@ -276,7 +276,7 @@ const AnimalForm: React.FC<AnimalFormProps> = ({ tutores, onSave }) => {
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-gray-500 uppercase mb-1">
+            <label className="block text-xs font-bold text-slate-500 dark:text-slate-300 uppercase mb-1">
               Raça *
             </label>
             <input
@@ -286,13 +286,13 @@ const AnimalForm: React.FC<AnimalFormProps> = ({ tutores, onSave }) => {
               onChange={(e) =>
                 setFormData({ ...formData, raca: e.target.value })
               }
-              className="w-full rounded-xl border border-gray-200 bg-gray-50 py-3 px-4 text-sm focus:ring-2 focus:ring-crarar-primary outline-none transition-all"
+              className="w-full rounded-xl border border-gray-200 dark:border-slate-800 bg-gray-50 dark:bg-slate-950 py-3 px-4 text-sm text-slate-900 dark:text-white placeholder:text-slate-400 focus:ring-2 focus:ring-crarar-primary outline-none transition-all"
               placeholder="Ex: Labrador"
             />
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-gray-500 uppercase mb-1">
+            <label className="block text-xs font-bold text-slate-500 dark:text-slate-300 uppercase mb-1">
               Nascimento *
             </label>
             <div className="relative">
@@ -304,17 +304,17 @@ const AnimalForm: React.FC<AnimalFormProps> = ({ tutores, onSave }) => {
                 onChange={(e) =>
                   setFormData({ ...formData, data_nascimento: e.target.value })
                 }
-                className="w-full rounded-xl border border-gray-200 bg-gray-50 py-3 pl-10 pr-4 text-sm focus:ring-2 focus:ring-crarar-primary outline-none transition-all"
+                className="w-full rounded-xl border border-gray-200 dark:border-slate-800 bg-gray-50 dark:bg-slate-950 py-3 pl-10 pr-4 text-sm text-slate-900 dark:text-white focus:ring-2 focus:ring-crarar-primary outline-none transition-all"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-gray-500 uppercase mb-1">
+            <label className="block text-xs font-bold text-slate-500 dark:text-slate-300 uppercase mb-1">
               Sexo *
             </label>
-            <div className="flex gap-4 p-2 bg-gray-50 rounded-xl border border-gray-200">
-              <label className="flex items-center gap-2 text-sm text-gray-600 cursor-pointer">
+            <div className="flex gap-4 p-2 bg-gray-50 dark:bg-slate-950 rounded-xl border border-gray-200 dark:border-slate-800">
+              <label className="flex items-center gap-2 text-sm text-gray-600 dark:text-slate-300 cursor-pointer">
                 <input
                   type="radio"
                   name="sexo"
@@ -325,7 +325,7 @@ const AnimalForm: React.FC<AnimalFormProps> = ({ tutores, onSave }) => {
                 />
                 Macho
               </label>
-              <label className="flex items-center gap-2 text-sm text-gray-600 cursor-pointer">
+              <label className="flex items-center gap-2 text-sm text-gray-600 dark:text-slate-300 cursor-pointer">
                 <input
                   type="radio"
                   name="sexo"
@@ -340,7 +340,7 @@ const AnimalForm: React.FC<AnimalFormProps> = ({ tutores, onSave }) => {
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-gray-500 uppercase mb-1">
+            <label className="block text-xs font-bold text-slate-500 dark:text-slate-300 uppercase mb-1">
               Peso (kg) *
             </label>
             <div className="relative">
@@ -354,7 +354,7 @@ const AnimalForm: React.FC<AnimalFormProps> = ({ tutores, onSave }) => {
                   const val = parseFloat(e.target.value);
                   setFormData({ ...formData, peso: isNaN(val) ? 0 : val });
                 }}
-                className="w-full rounded-xl border border-gray-200 bg-gray-50 py-3 pl-10 pr-4 text-sm focus:ring-2 focus:ring-crarar-primary outline-none transition-all"
+                className="w-full rounded-xl border border-gray-200 dark:border-slate-800 bg-gray-50 dark:bg-slate-950 py-3 pl-10 pr-4 text-sm text-slate-900 dark:text-white placeholder:text-slate-400 focus:ring-2 focus:ring-crarar-primary outline-none transition-all"
                 placeholder="0.00"
               />
             </div>
@@ -362,7 +362,7 @@ const AnimalForm: React.FC<AnimalFormProps> = ({ tutores, onSave }) => {
         </div>
 
         <div>
-          <label className="block text-xs font-bold text-gray-500 uppercase mb-1">
+          <label className="block text-xs font-bold text-slate-500 dark:text-slate-300 uppercase mb-1">
             Microchip
           </label>
           <div className="relative">
@@ -373,7 +373,7 @@ const AnimalForm: React.FC<AnimalFormProps> = ({ tutores, onSave }) => {
               onChange={(e) =>
                 setFormData({ ...formData, microchip: e.target.value })
               }
-              className="w-full rounded-xl border border-gray-200 bg-gray-50 py-3 pl-10 pr-4 text-sm focus:ring-2 focus:ring-crarar-primary outline-none transition-all"
+              className="w-full rounded-xl border border-gray-200 dark:border-slate-800 bg-gray-50 dark:bg-slate-950 py-3 pl-10 pr-4 text-sm text-slate-900 dark:text-white placeholder:text-slate-400 focus:ring-2 focus:ring-crarar-primary outline-none transition-all"
               placeholder="Ex: 985141000123456"
               maxLength={50}
             />
