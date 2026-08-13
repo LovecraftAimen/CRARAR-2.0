@@ -46,6 +46,12 @@ export const AddressFields: React.FC<AddressFieldsProps> = ({
   const [multipleResults, setMultipleResults] = useState<ViaCepResponse[] | null>(null);
   const [feedbackMessage, setFeedbackMessage] = useState<{ type: 'success' | 'info' | 'error'; text: string } | null>(null);
 
+  // Searchable dropdown states
+  const [showEstadoDropdown, setShowEstadoDropdown] = useState(false);
+  const [estadoSearch, setEstadoSearch] = useState('');
+  const [showCidadeDropdown, setShowCidadeDropdown] = useState(false);
+  const [cidadeSearch, setCidadeSearch] = useState('');
+
   // Carregar cidades sempre que o Estado (UF) mudar
   useEffect(() => {
     if (estado && estado.length === 2) {
@@ -181,14 +187,14 @@ export const AddressFields: React.FC<AddressFieldsProps> = ({
   return (
     <div className="space-y-4">
       {/* Título da Seção */}
-      <div className="pt-2 border-t border-slate-100 flex items-center justify-between">
+      <div className="pt-2 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <MapPin className="h-4 w-4 text-crarar-primary" />
-          <span className="text-xs font-black text-slate-600 uppercase tracking-wider">
-            Endereço Residencial (ViaCEP)
+          <span className="text-xs font-black text-slate-600 dark:text-slate-300 uppercase tracking-wider">
+            Endereço Residencial
           </span>
         </div>
-        <span className="text-[10px] text-slate-400 font-medium">
+        <span className="text-[10px] text-slate-400 dark:text-slate-400 font-medium">
           Busca por CEP ou Busca Inversa por Endereço
         </span>
       </div>
@@ -197,14 +203,14 @@ export const AddressFields: React.FC<AddressFieldsProps> = ({
       {feedbackMessage && (
         <div className={`p-3 rounded-xl text-xs font-medium flex items-center justify-between gap-2 transition-all ${
           feedbackMessage.type === 'success' 
-            ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' 
+            ? 'bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800' 
             : feedbackMessage.type === 'error'
-              ? 'bg-red-50 text-red-700 border border-red-200'
-              : 'bg-blue-50 text-blue-700 border border-blue-200'
+              ? 'bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-300 border border-red-200 dark:border-red-800'
+              : 'bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800'
         }`}>
           <div className="flex items-center gap-2">
             {feedbackMessage.type === 'success' ? (
-              <Check className="h-4 w-4 shrink-0 text-emerald-600" />
+              <Check className="h-4 w-4 shrink-0 text-emerald-600 dark:text-emerald-400" />
             ) : (
               <AlertCircle className="h-4 w-4 shrink-0" />
             )}
@@ -213,81 +219,183 @@ export const AddressFields: React.FC<AddressFieldsProps> = ({
           <button 
             type="button" 
             onClick={() => setFeedbackMessage(null)}
-            className="p-1 hover:bg-black/5 rounded-lg transition-all"
+            className="p-1 hover:bg-black/5 dark:hover:bg-white/10 rounded-lg transition-all"
           >
-            <X className="h-3.5 w-3.5" />
+            <X className="h-3.5 w-3.5 text-slate-600 dark:text-slate-300" />
           </button>
         </div>
       )}
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {/* Estado (UF) - Dropdown */}
-        <div>
-          <label className="block text-xs font-bold text-gray-500 uppercase mb-1">
+        {/* Estado (UF) - Searchable Dropdown */}
+        <div className="relative">
+          <label className="block text-xs font-bold text-slate-500 dark:text-slate-300 uppercase mb-1">
             Estado (UF) *
           </label>
-          <select
-            value={estado}
-            onChange={handleEstadoChange}
-            className="w-full rounded-xl border border-gray-200 bg-gray-50 py-3 px-4 text-sm font-semibold text-slate-800 focus:ring-2 focus:ring-crarar-primary outline-none transition-all"
+          <div 
+            onClick={() => setShowEstadoDropdown(!showEstadoDropdown)}
+            className="w-full rounded-xl border border-gray-200 dark:border-slate-800 bg-gray-50 dark:bg-slate-950 py-3 px-4 text-sm font-semibold text-slate-800 dark:text-white cursor-pointer flex items-center justify-between select-none"
           >
-            <option value="">Selecione o Estado</option>
-            {ESTADOS_BRASIL.map((item) => (
-              <option key={item.uf} value={item.uf}>
-                {item.nome} ({item.uf})
-              </option>
-            ))}
-          </select>
+            <span>
+              {estado ? `${ESTADOS_BRASIL.find(e => e.uf === estado)?.nome || estado} (${estado})` : 'Selecione o Estado'}
+            </span>
+            <Search className="h-4 w-4 text-slate-400" />
+          </div>
+
+          {showEstadoDropdown && (
+            <div className="absolute z-50 left-0 right-0 mt-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-xl p-3 space-y-2">
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+                <input
+                  type="text"
+                  placeholder="Pesquisar estado..."
+                  value={estadoSearch}
+                  onChange={(e) => setEstadoSearch(e.target.value)}
+                  onClick={(e) => e.stopPropagation()}
+                  autoFocus
+                  className="w-full rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 py-2.5 pl-9 pr-3 text-xs font-medium text-slate-800 dark:text-white outline-none focus:ring-2 focus:ring-crarar-primary"
+                />
+              </div>
+              <div className="max-h-52 overflow-y-auto space-y-1">
+                <div
+                  onClick={() => {
+                    onChange('estado', '');
+                    onChange('cidade', '');
+                    setShowEstadoDropdown(false);
+                    setEstadoSearch('');
+                  }}
+                  className="px-3 py-2 text-xs font-semibold rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 cursor-pointer"
+                >
+                  Selecione o Estado
+                </div>
+                {ESTADOS_BRASIL
+                  .filter(item => item.nome.toLowerCase().includes(estadoSearch.toLowerCase()) || item.uf.toLowerCase().includes(estadoSearch.toLowerCase()))
+                  .map((item) => (
+                    <div
+                      key={item.uf}
+                      onClick={() => {
+                        onChange('estado', item.uf);
+                        onChange('cidade', '');
+                        setShowEstadoDropdown(false);
+                        setEstadoSearch('');
+                      }}
+                      className={`px-3 py-2 text-xs font-semibold rounded-lg cursor-pointer transition-colors flex items-center justify-between ${
+                        estado === item.uf 
+                          ? 'bg-crarar-primary text-white' 
+                          : 'hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-800 dark:text-white'
+                      }`}
+                    >
+                      <span>{item.nome} ({item.uf})</span>
+                      {estado === item.uf && <Check className="h-3.5 w-3.5" />}
+                    </div>
+                  ))}
+              </div>
+            </div>
+          )}
         </div>
 
-        {/* Cidade - Dropdown dinâmico com cidades do estado */}
-        <div>
-          <label className="block text-xs font-bold text-gray-500 uppercase mb-1 flex items-center justify-between">
+        {/* Cidade - Searchable Dropdown */}
+        <div className="relative">
+          <label className="block text-xs font-bold text-slate-500 dark:text-slate-300 uppercase mb-1 flex items-center justify-between">
             <span>Cidade *</span>
             {loadingCidades && <Loader2 className="h-3 w-3 animate-spin text-crarar-primary" />}
           </label>
-          <select
-            disabled={!estado || loadingCidades}
-            value={cidade}
-            onChange={(e) => onChange('cidade', e.target.value)}
-            className="w-full rounded-xl border border-gray-200 bg-gray-50 py-3 px-4 text-sm font-semibold text-slate-800 focus:ring-2 focus:ring-crarar-primary outline-none transition-all disabled:opacity-50"
+          <div 
+            onClick={() => {
+              if (estado && !loadingCidades) {
+                setShowCidadeDropdown(!showCidadeDropdown);
+              }
+            }}
+            className={`w-full rounded-xl border border-gray-200 dark:border-slate-800 bg-gray-50 dark:bg-slate-950 py-3 px-4 text-sm font-semibold text-slate-800 dark:text-white flex items-center justify-between select-none ${
+              !estado || loadingCidades ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'
+            }`}
           >
-            <option value="">
+            <span className="truncate">
               {!estado
                 ? 'Selecione a UF primeiro'
                 : loadingCidades
                   ? 'Carregando cidades...'
-                  : 'Selecione a Cidade'}
-            </option>
-            {/* Se a cidade atual não estiver na lista (ex: preenchida via CEP), adiciona como primeira opção */}
-            {cidade && !cidadesList.includes(cidade) && (
-              <option value={cidade}>{cidade}</option>
-            )}
-            {cidadesList.map((m) => (
-              <option key={m} value={m}>
-                {m}
-              </option>
-            ))}
-          </select>
+                  : cidade || 'Selecione a Cidade'}
+            </span>
+            <Search className="h-4 w-4 text-slate-400 shrink-0 ml-2" />
+          </div>
+
+          {showCidadeDropdown && (
+            <div className="absolute z-50 left-0 right-0 mt-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-xl p-3 space-y-2">
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+                <input
+                  type="text"
+                  placeholder="Pesquisar cidade..."
+                  value={cidadeSearch}
+                  onChange={(e) => setCidadeSearch(e.target.value)}
+                  onClick={(e) => e.stopPropagation()}
+                  autoFocus
+                  className="w-full rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 py-2.5 pl-9 pr-3 text-xs font-medium text-slate-800 dark:text-white outline-none focus:ring-2 focus:ring-crarar-primary"
+                />
+              </div>
+              <div className="max-h-52 overflow-y-auto space-y-1">
+                {/* Se a cidade atual não estiver na lista */}
+                {cidade && !cidadesList.includes(cidade) && (
+                  <div
+                    onClick={() => {
+                      onChange('cidade', cidade);
+                      setShowCidadeDropdown(false);
+                      setCidadeSearch('');
+                    }}
+                    className="px-3 py-2 text-xs font-semibold rounded-lg bg-crarar-primary text-white cursor-pointer flex items-center justify-between"
+                  >
+                    <span>{cidade}</span>
+                    <Check className="h-3.5 w-3.5" />
+                  </div>
+                )}
+                {cidadesList
+                  .filter(m => m.toLowerCase().includes(cidadeSearch.toLowerCase()))
+                  .map((m) => (
+                    <div
+                      key={m}
+                      onClick={() => {
+                        onChange('cidade', m);
+                        setShowCidadeDropdown(false);
+                        setCidadeSearch('');
+                      }}
+                      className={`px-3 py-2 text-xs font-semibold rounded-lg cursor-pointer transition-colors flex items-center justify-between ${
+                        cidade === m 
+                          ? 'bg-crarar-primary text-white' 
+                          : 'hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-800 dark:text-white'
+                      }`}
+                    >
+                      <span>{m}</span>
+                      {cidade === m && <Check className="h-3.5 w-3.5" />}
+                    </div>
+                  ))}
+                {cidadesList.filter(m => m.toLowerCase().includes(cidadeSearch.toLowerCase())).length === 0 && (
+                  <div className="py-4 text-center text-xs text-slate-400 font-medium">
+                    Nenhuma cidade encontrada
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
         </div>
 
         {/* CEP com Busca Direta */}
         <div>
-          <label className="block text-xs font-bold text-gray-500 uppercase mb-1">
+          <label className="block text-xs font-bold text-slate-500 dark:text-slate-300 uppercase mb-1">
             CEP
           </label>
           <div className="relative">
             {loadingCep ? (
               <Loader2 className="absolute left-3 top-2.5 h-5 w-5 text-crarar-primary animate-spin" />
             ) : (
-              <Search className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
+              <Search className="absolute left-3 top-2.5 h-5 w-5 text-gray-400 dark:text-slate-400" />
             )}
             <input
               type="text"
               maxLength={9}
               value={cep}
               onChange={handleCepChange}
-              className="w-full rounded-xl border border-gray-200 bg-gray-50 py-3 pl-10 pr-4 text-sm font-mono focus:ring-2 focus:ring-crarar-primary outline-none transition-all"
+              className="w-full rounded-xl border border-gray-200 dark:border-slate-800 bg-gray-50 dark:bg-slate-950 py-3 pl-10 pr-4 text-sm font-mono text-slate-900 dark:text-white placeholder:text-slate-400 focus:ring-2 focus:ring-crarar-primary outline-none transition-all"
               placeholder="00000-000"
             />
           </div>
@@ -295,28 +403,28 @@ export const AddressFields: React.FC<AddressFieldsProps> = ({
 
         {/* Bairro */}
         <div>
-          <label className="block text-xs font-bold text-gray-500 uppercase mb-1">
+          <label className="block text-xs font-bold text-slate-500 dark:text-slate-300 uppercase mb-1">
             Bairro
           </label>
           <input
             type="text"
             value={bairro}
             onChange={(e) => onChange('bairro', e.target.value)}
-            className="w-full rounded-xl border border-gray-200 bg-gray-50 py-3 px-4 text-sm focus:ring-2 focus:ring-crarar-primary outline-none transition-all"
+            className="w-full rounded-xl border border-gray-200 dark:border-slate-800 bg-gray-50 dark:bg-slate-950 py-3 px-4 text-sm text-slate-900 dark:text-white placeholder:text-slate-400 focus:ring-2 focus:ring-crarar-primary outline-none transition-all"
             placeholder="Ex: Centro"
           />
         </div>
 
         {/* Logradouro / Nome da Rua */}
         <div className="md:col-span-2">
-          <label className="block text-xs font-bold text-gray-500 uppercase mb-1">
+          <label className="block text-xs font-bold text-slate-500 dark:text-slate-300 uppercase mb-1">
             Endereço (Rua / Logradouro)
           </label>
           <input
             type="text"
             value={endereco}
             onChange={(e) => onChange('endereco', e.target.value)}
-            className="w-full rounded-xl border border-gray-200 bg-gray-50 py-3 px-4 text-sm focus:ring-2 focus:ring-crarar-primary outline-none transition-all"
+            className="w-full rounded-xl border border-gray-200 dark:border-slate-800 bg-gray-50 dark:bg-slate-950 py-3 px-4 text-sm text-slate-900 dark:text-white placeholder:text-slate-400 focus:ring-2 focus:ring-crarar-primary outline-none transition-all"
             placeholder="Rua, Avenida, Praça... (mín. 3 caracteres para busca de CEP)"
           />
         </div>
@@ -329,14 +437,14 @@ export const AddressFields: React.FC<AddressFieldsProps> = ({
             onClick={handleInverseCepSearch}
             className={`w-full py-2.5 px-4 rounded-xl font-bold text-xs flex items-center justify-center gap-2 border transition-all ${
               canSearchInverse
-                ? 'bg-crarar-primary/10 border-crarar-primary/30 text-crarar-primary hover:bg-crarar-primary hover:text-white shadow-sm'
-                : 'bg-slate-100 border-slate-200 text-slate-400 cursor-not-allowed'
+                ? 'bg-crarar-primary/10 dark:bg-crarar-primary/20 border-crarar-primary/30 text-crarar-primary hover:bg-crarar-primary hover:text-white shadow-sm'
+                : 'bg-slate-100 dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-400 dark:text-slate-400 cursor-not-allowed'
             }`}
           >
             {loadingInverseCep ? (
               <>
                 <Loader2 className="h-4 w-4 animate-spin" />
-                <span>Consultando ViaCEP por Endereço...</span>
+                <span>Consultando por Endereço...</span>
               </>
             ) : (
               <>
@@ -353,27 +461,27 @@ export const AddressFields: React.FC<AddressFieldsProps> = ({
 
         {/* Número e Complemento */}
         <div>
-          <label className="block text-xs font-bold text-gray-500 uppercase mb-1">
+          <label className="block text-xs font-bold text-slate-500 dark:text-slate-300 uppercase mb-1">
             Número
           </label>
           <input
             type="text"
             value={numero}
             onChange={(e) => onChange('numero', e.target.value)}
-            className="w-full rounded-xl border border-gray-200 bg-gray-50 py-3 px-4 text-sm focus:ring-2 focus:ring-crarar-primary outline-none transition-all"
+            className="w-full rounded-xl border border-gray-200 dark:border-slate-800 bg-gray-50 dark:bg-slate-950 py-3 px-4 text-sm text-slate-900 dark:text-white placeholder:text-slate-400 focus:ring-2 focus:ring-crarar-primary outline-none transition-all"
             placeholder="Ex: 123"
           />
         </div>
 
         <div>
-          <label className="block text-xs font-bold text-gray-500 uppercase mb-1">
+          <label className="block text-xs font-bold text-slate-500 dark:text-slate-300 uppercase mb-1">
             Complemento
           </label>
           <input
             type="text"
             value={complemento}
             onChange={(e) => onChange('complemento', e.target.value)}
-            className="w-full rounded-xl border border-gray-200 bg-gray-50 py-3 px-4 text-sm focus:ring-2 focus:ring-crarar-primary outline-none transition-all"
+            className="w-full rounded-xl border border-gray-200 dark:border-slate-800 bg-gray-50 dark:bg-slate-950 py-3 px-4 text-sm text-slate-900 dark:text-white placeholder:text-slate-400 focus:ring-2 focus:ring-crarar-primary outline-none transition-all"
             placeholder="Apto 101, Bloco B..."
           />
         </div>
