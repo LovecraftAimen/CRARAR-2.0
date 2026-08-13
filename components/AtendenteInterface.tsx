@@ -22,6 +22,9 @@ const AtendenteInterface: React.FC = () => {
   const { tutores, animais, atendimentos, saveTutor, saveAnimal, updateAnimal } = useSupabaseData();
   const [activeTab, setActiveTab] = useState<'tutor' | 'animal' | 'search' | 'adocao'>('search');
 
+  const obituarioIds = animais.filter(a => atendimentos.some(at => at.animal_id === a.id && at.obito === true)).map(a => a.id);
+  const animaisAtivos = animais.filter(a => !obituarioIds.includes(a.id));
+
   return (
     <div className="min-h-screen bg-crarar-light">
       {/* Reception Header */}
@@ -89,7 +92,7 @@ const AtendenteInterface: React.FC = () => {
              <div className="h-10 w-px bg-gray-100"></div>
              <div className="text-center">
                 <p className="text-[10px] font-bold text-gray-400 uppercase tracking-tighter">Pacientes</p>
-                <p className="text-xl font-bold text-crarar-primary">{animais.length}</p>
+                <p className="text-xl font-bold text-crarar-primary">{animaisAtivos.length}</p>
              </div>
           </div>
         </div>
@@ -101,12 +104,12 @@ const AtendenteInterface: React.FC = () => {
                 <Search className="h-5 w-5 text-crarar-primary" />
                 Buscar Cadastro
               </h3>
-              <SearchResults tutores={tutores} animais={animais} atendimentos={atendimentos} userRole="atendente" />
+              <SearchResults tutores={tutores} animais={animaisAtivos} atendimentos={atendimentos} userRole="atendente" />
             </div>
           )}
           {activeTab === 'tutor' && <TutorForm onSave={saveTutor} />}
           {activeTab === 'animal' && <AnimalForm tutores={tutores} onSave={saveAnimal} />}
-          {activeTab === 'adocao' && <Adocao animais={animais} tutores={tutores} onUpdateAnimal={updateAnimal} />}
+          {activeTab === 'adocao' && <Adocao animais={animaisAtivos} tutores={tutores} onUpdateAnimal={updateAnimal} />}
         </div>
       </main>
     </div>
