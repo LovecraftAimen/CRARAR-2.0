@@ -328,9 +328,9 @@ export const Adocao: React.FC<AdocaoProps> = ({ animais, tutores, onUpdateAnimal
 
             <button
               onClick={() => handleOpenForm()}
-              className="relative z-10 flex items-center justify-center gap-2.5 bg-white text-emerald-900 font-extrabold px-6 py-4 rounded-2xl shadow-lg hover:bg-emerald-50 active:scale-95 transition-all text-sm shrink-0 w-full md:w-auto"
+              className="relative z-10 flex items-center justify-center gap-2.5 bg-white dark:bg-slate-900 text-emerald-900 dark:text-white font-extrabold px-6 py-4 rounded-2xl shadow-lg hover:bg-emerald-50 dark:hover:bg-slate-800 border border-transparent dark:border-slate-800 active:scale-95 transition-all text-sm shrink-0 w-full md:w-auto"
             >
-              <Plus className="h-5 w-5 text-emerald-700" />
+              <Plus className="h-5 w-5 text-emerald-700 dark:text-emerald-400" />
               <span>Nova Adoção / Transferência</span>
             </button>
           </div>
