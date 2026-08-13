@@ -43,27 +43,27 @@ const AnimalListItem = ({
   const isCrarar = tutor?.nome?.toUpperCase() === 'CRARAR';
 
   return (
-    <div className="group flex flex-col sm:flex-row items-center gap-4 overflow-hidden rounded-3xl bg-white p-5 shadow-sm border border-slate-100 transition-all hover:shadow-md hover:translate-y-[-2px]">
+    <div className="group flex flex-col sm:flex-row items-center gap-4 overflow-hidden rounded-3xl bg-white dark:bg-slate-900 p-5 shadow-sm border border-slate-100 dark:border-slate-800 transition-all hover:shadow-md hover:translate-y-[-2px]">
       <div className={`flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl shadow-sm ${
-        isCrarar ? 'bg-crarar-primary text-white' : 'bg-green-100 text-green-600'
+        isCrarar ? 'bg-crarar-primary text-white' : 'bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400'
       }`}>
         <PawPrint className="h-8 w-8" />
       </div>
       
       <div className="flex-1 text-center sm:text-left overflow-hidden">
         <div className="flex flex-col sm:flex-row sm:items-center gap-2 overflow-hidden">
-          <h4 className="text-lg font-bold text-slate-800 truncate">{animal.nome}</h4>
+          <h4 className="text-lg font-bold text-slate-800 dark:text-white truncate">{animal.nome}</h4>
           {isCrarar && (
             <span className="inline-flex items-center justify-center gap-1 rounded-full bg-crarar-primary px-3 py-1 text-[9px] font-bold uppercase text-white w-fit mx-auto sm:mx-0 shadow-sm">
               <ShieldCheck className="h-3 w-3" /> CRARAR
             </span>
           )}
         </div>
-        <p className="text-sm text-slate-500 font-medium truncate">{animal.especie} &bull; {animal.raca}</p>
-        <div className="mt-2 flex flex-wrap justify-center sm:justify-start items-center gap-3 text-xs text-slate-400">
-           <div className="flex items-center gap-1.5 bg-slate-50 px-3 py-1 rounded-full border border-slate-100">
-              <User className="h-3 w-3" />
-              <span className="font-bold text-slate-600 truncate max-w-[150px]">{tutor?.nome || 'Sem tutor'}</span>
+        <p className="text-sm text-slate-500 dark:text-slate-300 font-medium truncate">{animal.especie} &bull; {animal.raca}</p>
+        <div className="mt-2 flex flex-wrap justify-center sm:justify-start items-center gap-3 text-xs text-slate-400 dark:text-slate-400">
+           <div className="flex items-center gap-1.5 bg-slate-50 dark:bg-slate-950 px-3 py-1 rounded-full border border-slate-100 dark:border-slate-800">
+              <User className="h-3 w-3 text-slate-400 dark:text-slate-300" />
+              <span className="font-bold text-slate-700 dark:text-slate-200 truncate max-w-[150px]">{tutor?.nome || 'Sem tutor'}</span>
            </div>
         </div>
       </div>
@@ -74,7 +74,7 @@ const AnimalListItem = ({
           className={`flex w-full sm:w-auto items-center justify-center gap-2 rounded-2xl px-6 py-3 text-xs font-bold transition-all shadow-sm ${
             isCrarar 
               ? 'bg-crarar-primary text-white hover:bg-crarar-primary/90' 
-              : 'bg-white border border-slate-200 text-slate-600 hover:border-crarar-primary hover:text-crarar-primary'
+              : 'bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:border-crarar-primary hover:text-crarar-primary dark:hover:text-white'
           }`}
         >
           <Info className="h-4 w-4" />
@@ -341,15 +341,15 @@ const SearchPacientes: React.FC<SearchPacientesProps> = ({ tutores, animais, ate
 
   return (
     <div className="space-y-6">
-      <div className="bg-white rounded-[32px] p-6 shadow-sm border border-slate-100">
+      <div className="bg-white dark:bg-slate-900 rounded-[32px] p-6 shadow-sm border border-slate-100 dark:border-slate-800">
         <div className="relative">
-          <Search className="absolute left-5 top-1/2 -translate-y-1/2 h-6 w-6 text-slate-300" />
+          <Search className="absolute left-5 top-1/2 -translate-y-1/2 h-6 w-6 text-slate-400 dark:text-slate-300" />
           <input
             type="text"
             placeholder="Buscar por nome do paciente, tutor ou raça..."
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            className="w-full rounded-2xl border border-slate-200 bg-slate-50/50 py-4 pl-14 pr-6 text-base font-medium outline-none focus:bg-white focus:border-crarar-primary transition-all shadow-inner"
+            className="w-full rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 py-4 pl-14 pr-6 text-base font-medium text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-400 outline-none focus:bg-white dark:focus:bg-slate-900 focus:border-crarar-primary transition-all shadow-inner"
           />
         </div>
       </div>
@@ -364,8 +364,8 @@ const SearchPacientes: React.FC<SearchPacientesProps> = ({ tutores, animais, ate
           />
         ))}
         {paginated.length === 0 && (
-          <div className="py-20 text-center bg-white rounded-[32px] border border-dashed border-slate-200">
-            <p className="text-slate-400 font-bold italic">Nenhum paciente encontrado.</p>
+          <div className="py-20 text-center bg-white dark:bg-slate-900 rounded-[32px] border border-dashed border-slate-200 dark:border-slate-800">
+            <p className="text-slate-400 dark:text-slate-300 font-bold italic">Nenhum paciente encontrado.</p>
           </div>
         )}
       </div>
