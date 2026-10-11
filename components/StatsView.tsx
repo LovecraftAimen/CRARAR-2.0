@@ -291,7 +291,6 @@ const filteredData = useMemo(() => {
             <FileText className="h-4 w-4" /> Gerar Relatório A4
           </button>
           <div className="flex bg-slate-100 dark:bg-slate-800 p-1.5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-inner">
-            /* {(['Mes', 'Trimestre', 'Semestre', 'Ano'] as Period[]).map((p) => ( */
       {(['Mes', 'Trimestre', 'Semestre', 'Ano', 'Total'] as Period[]).map((p) => (
               <button
                 key={p}
