@@ -33,7 +33,8 @@ interface StatsViewProps {
   tutores: Tutor[];
 }
 
-type Period = 'Mes' | 'Trimestre' | 'Semestre' | 'Ano';
+// type Period = 'Mes' | 'Trimestre' | 'Semestre' | 'Ano';
+type Period = 'Mes' | 'Trimestre' | 'Semestre' | 'Ano' | 'Total';
 
 const StatsView: React.FC<StatsViewProps> = ({ atendimentos, animais, produtos, tutores }) => {
   const [period, setPeriod] = useState<Period>('Mes');
@@ -78,21 +79,50 @@ const StatsView: React.FC<StatsViewProps> = ({ atendimentos, animais, produtos, 
     return brTime;
   };
 
-  const filteredData = useMemo(() => {
-    const brNow = getBrasiliaDate();
-    let startDate = new Date(brNow);
+  // const filteredData = useMemo(() => {
+  //   const brNow = getBrasiliaDate();
+  //   let startDate = new Date(brNow);
     
-    if (period === 'Mes') startDate.setMonth(brNow.getMonth() - 1);
-    else if (period === 'Trimestre') startDate.setMonth(brNow.getMonth() - 3);
-    else if (period === 'Semestre') startDate.setMonth(brNow.getMonth() - 6);
-    else if (period === 'Ano') startDate.setFullYear(brNow.getFullYear() - 1);
+  //   if (period === 'Mes') startDate.setMonth(brNow.getMonth() - 1);
+  //   else if (period === 'Trimestre') startDate.setMonth(brNow.getMonth() - 3);
+  //   else if (period === 'Semestre') startDate.setMonth(brNow.getMonth() - 6);
+  //   else if (period === 'Ano') startDate.setFullYear(brNow.getFullYear() - 1);
 
+  //   return {
+  //     atendimentos: atendimentos.filter(a => new Date(a.data) >= startDate),
+  //     animais: animais.filter(a => a.created_at ? new Date(a.created_at) >= startDate : true),
+  //     tutores: tutores.filter(t => t.created_at ? new Date(t.created_at) >= startDate : true),
+  //   };
+  // }, [period, atendimentos, animais, tutores]);
+
+  
+const filteredData = useMemo(() => {
+  const brNow = getBrasiliaDate();
+  let startDate = new Date(brNow);
+
+  if (period === 'Mes') startDate.setMonth(brNow.getMonth() - 1);
+  else if (period === 'Trimestre') startDate.setMonth(brNow.getMonth() - 3);
+  else if (period === 'Semestre') startDate.setMonth(brNow.getMonth() - 6);
+  else if (period === 'Ano') startDate.setFullYear(brNow.getFullYear() - 1);
+
+  if (period === 'Total') {
     return {
-      atendimentos: atendimentos.filter(a => new Date(a.data) >= startDate),
-      animais: animais.filter(a => a.created_at ? new Date(a.created_at) >= startDate : true),
-      tutores: tutores.filter(t => t.created_at ? new Date(t.created_at) >= startDate : true),
+      atendimentos,
+      animais,
+      tutores,
     };
-  }, [period, atendimentos, animais, tutores]);
+  }
+
+  return {
+    atendimentos: atendimentos.filter(a => new Date(a.data) >= startDate),
+    animais: animais.filter(a =>
+      a.created_at ? new Date(a.created_at) >= startDate : true
+    ),
+    tutores: tutores.filter(t =>
+      t.created_at ? new Date(t.created_at) >= startDate : true
+    ),
+  };
+}, [period, atendimentos, animais, tutores]);
 
   const last7DaysData = useMemo(() => {
     const days = [];
@@ -261,7 +291,8 @@ const StatsView: React.FC<StatsViewProps> = ({ atendimentos, animais, produtos, 
             <FileText className="h-4 w-4" /> Gerar Relatório A4
           </button>
           <div className="flex bg-slate-100 dark:bg-slate-800 p-1.5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-inner">
-            {(['Mes', 'Trimestre', 'Semestre', 'Ano'] as Period[]).map((p) => (
+            /* {(['Mes', 'Trimestre', 'Semestre', 'Ano'] as Period[]).map((p) => ( */
+      {(['Mes', 'Trimestre', 'Semestre', 'Ano', 'Total'] as Period[]).map((p) => (
               <button
                 key={p}
                 onClick={() => setPeriod(p)}
